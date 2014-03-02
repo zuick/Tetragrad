@@ -4,20 +4,18 @@
 Phaser.TetraLevel = function( game, levelName ){
     this.game = game;
     this.levelName = levelName;
-    
-    this.preload = function() {
-        
-    }
 
     this.create = function() {
-        this.showLevelName();
         
         this.game.input.onDown.add( this.nextLevel, this);
-    }
-    
-    this.showLevelName = function(){
-        var text = this.game.add.text( this.game.world.centerX, this.game.world.centerY, this.levelName, { fill: "#FFF" } );
-        text.anchor.setTo( 0.5, 0.5 );
+        
+        this.game.stage.backgroundColor = '#000';
+        
+        this.map = this.game.add.tilemap( levelName );
+        this.map.addTilesetImage('tileset', 'tileset');
+        this.map.setCollision( this.game.config.collidableTiles );
+        this.mapLayer = this.map.createLayer('ground');
+        this.mapLayer.resizeWorld();
     }
     
     this.nextLevel = function(){

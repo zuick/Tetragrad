@@ -1,9 +1,22 @@
-var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create });
+(function(){
+    var config = {
+        width: 640,
+        height: 480,
+        renderer: Phaser.CANVAS,
+        parent: "",
+        state: null,
+        transparent: false,
+        antialias: false,
+        
+        levels: [ "level1", "level2", "level3" ],
+    }
+    
+    var game = new Phaser.Game( config );
 
-function preload() {
-    game.load.image('block', 'assets/tetris-block.png');
-}
+    for( var i in config.levels ){                
+        game.state.add( config.levels[i], new Phaser.TetraLevel( game, config.levels[i] ), i == 0 );        
+    }
+    
+})();
 
-function create() {
-    game.add.sprite(0, 0, 'block');
-}
+

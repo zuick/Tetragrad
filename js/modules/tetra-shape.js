@@ -35,9 +35,9 @@ Phaser.TetraShape = function( game, map, interval ){
     this.tick = function(){
         if( this.checkGroundCollision() ){
             this.game.time.events.remove( this.eventHandle );
+           
         }else{
-        this.falling();
-            
+            this.falling(); 
         }
     }
     
@@ -57,6 +57,7 @@ Phaser.TetraShape = function( game, map, interval ){
     }
     
     this.falling = function(){
+
         this.putShape( this.type, this.x, this.y, this.rotate, 1 );
         this.y++;
         this.putShape( this.type, this.x, this.y, this.rotate, this.tileIndex );
@@ -66,6 +67,19 @@ Phaser.TetraShape = function( game, map, interval ){
         this.putShape( this.type, this.x, this.y, this.rotate, 1 );
         this.x += dx;
         this.putShape( this.type, this.x, this.y, this.rotate, this.tileIndex );        
+    }
+
+    this.edgeOfWorld = function(){
+        if(this.y >= this.map.height){
+            var type = this.game.config.fallingShapesTypes[Math.floor((Math.random()*7))];
+            var x = 10;
+            var y = 2;
+            var rotate = this.game.config.fallingShapesRotates[Math.floor((Math.random()*4))];
+            var tileIndex= this.game.config.fallingShapesTiles[Math.floor((Math.random()*4))];
+            this.setShape( type, x, y, rotate, tileIndex );
+        }
+        //console.log(this.map.height);
+        //console.log(this.map.width);
     }
 }
 

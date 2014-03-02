@@ -14,9 +14,21 @@ Phaser.TetraLevel = function( game, levelName ){
         this.map = this.game.add.tilemap( levelName );
         this.map.addTilesetImage('tileset', 'tileset');
         this.map.setCollision( this.game.config.collidableTiles );
-        this.mapLayer = this.map.createLayer('ground');
-        this.mapLayer.resizeWorld();
+        
+        this.ground = this.map.createLayer('ground');
+        this.ground.resizeWorld();
+        
+        this.shapeLayer = this.map.createLayer( 'shape' );
+        this.shapeLayer.resizeWorld();
+        
+        this.shape = new Phaser.TetraShape( this.game, this.map, 1000 );
+        this.shape.setShape( 'z', 2, 2, 'a', 11 );
+        this.shape.start();
+        
+        //this.game.input.keyboard.addKey( Phaser.Keyboard.SPACEBAR ).onDown.add( this.randomTile, this );
+        
     }
+    
     
     this.nextLevel = function(){
         var levels = this.game.config.levels;

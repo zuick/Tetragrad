@@ -10,7 +10,9 @@
         
         levels: [ 'level1', 'level2' ],
         collidableTiles: [ 0, 4, 5, 6, 7, 8, 9, 10, 11 ],
-        fallingShapesTiles: [ 8, 9, 10, 11 ]
+        fallingShapesTiles: [ 8, 9, 10, 11 ],
+        fallingShapesTypes: [ 'i', 'l', 'j', 's','z','o','t'],
+        fallingShapesRotates: [ 'a', 'b', 'c', 'd']
     }
     
     var game = new Phaser.Game( config );

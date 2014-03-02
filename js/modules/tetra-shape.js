@@ -33,7 +33,27 @@ Phaser.TetraShape = function( game, map, interval ){
     }
     
     this.tick = function(){
+        if( this.checkGroundCollision() ){
+            this.game.time.events.remove( this.eventHandle );
+        }else{
         this.falling();
+            
+        }
+    }
+    
+    this.checkGroundCollision = function(){
+        var shapeInfo = Phaser.TetraShapesInfo[this.type];
+        if( shapeInfo && shapeInfo[this.rotate] ){
+            for( var block in shapeInfo[this.rotate] ){
+                var tx = shapeInfo[this.rotate][block][0] + this.x;
+                var ty = shapeInfo[this.rotate][block][1] + this.y + 1; // at the next tick
+                // check if tile under tx, ty is collidable
+                if( this.game.config.collidableTiles.indexOf( this.map.getTile( tx, ty, "ground" ).index ) >= 0 ){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     
     this.falling = function(){

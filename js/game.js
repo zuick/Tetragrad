@@ -9,8 +9,8 @@
         antialias: false,
         
         levels: [ 'level1', 'level2' ],
-        collidableTiles: [ 0, 4, 5, 6, 7, 8, 9, 10, 11 ],
-        fallingShapesTiles: [ 8, 9, 10, 11 ]
+        collidableTiles: [ 2, 5, 6, 7, 8, 9, 10, 11, 12 ],
+        fallingShapesTiles: [ 9, 10, 11, 12 ]
     }
     
     var game = new Phaser.Game( config );

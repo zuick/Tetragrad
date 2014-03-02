@@ -21,8 +21,8 @@ Phaser.TetraLevel = function( game, levelName ){
         this.shapeLayer = this.map.createLayer( 'shape' );
         this.shapeLayer.resizeWorld();
         
-        this.shape = new Phaser.TetraShape( this.game, this.map, 1000 );
-        this.shape.setShape( 'z', 2, 2, 'a', 11 );
+        this.shape = new Phaser.TetraShape( this.game, this.map, 300 );
+        this.shape.setShape( 'z', 10, 2, 'a', 11 );
         this.shape.start();
         
         //this.game.input.keyboard.addKey( Phaser.Keyboard.SPACEBAR ).onDown.add( this.randomTile, this );

@@ -1,11 +1,14 @@
-Phaser.TetraShape = function( game, map, interval, turbo ){
+Phaser.TetraShape = function( game, map, options, onFail ){
+    options = options || {};
+    
     this.game = game;
     this.map = map;
-    this.interval = interval || 500;
-    this.turbo = turbo || 50;
-    this.moveInterval = 200;
-    this.moving = false;
+    this.interval = options.interval || 500;
+    this.turbo = options.turbo || 50;
+    this.moveInterval = options.moveInterval || 200;
+    this.maxLineWidth = options.maxLineWidth || 8;
     
+    this.moving = false;
     this.rotateSequence = {
         'a': 'b',
         'b': 'c',
@@ -26,8 +29,13 @@ Phaser.TetraShape = function( game, map, interval, turbo ){
         var x = this.map.width / 2;
         var y = 0;
         var r = this.game.config.fallingShapesRotates[Math.floor((Math.random()*this.game.config.fallingShapesRotates.length))];
-        var tileIndex = this.game.config.fallingShapesTiles[Math.floor((Math.random()*this.game.config.fallingShapesTiles.length))];
+        var tileIndex = this.game.config.fallingShapesTiles[Math.floor((Math.random()*this.game.config.fallingShapesTiles.length))];        
         this.setShape( type, x, y, r, tileIndex );
+        
+        if( this.isCollideGround( 0, 1 ) ){
+            if( this.FallingEventHandle ) this.game.time.events.remove( this.FallingEventHandle );
+            if( typeof onFail == 'function' ) onFail();
+        }
     }
     
     this.putShape = function( type, x, y, r, tileIndex, layerName ){
@@ -45,13 +53,15 @@ Phaser.TetraShape = function( game, map, interval, turbo ){
     
     this.start = function( interval ){
         interval = interval || this.interval;
-        this.eventHandle = this.game.time.events.loop( interval, this.tick, this )
+        this.FallingEventHandle = this.game.time.events.loop( interval, this.tick, this )
     }
     
     this.tick = function(){
         if( this.isCollideGround( 0, 1 ) ){
             // merge with ground layer
             this.putShape( this.type, this.x, this.y, this.r, this.tileIndex, "ground" );
+            // check if line
+            this.destroyLines( "ground" );
             // process collidable objects
             this.map.setCollision( this.game.config.collidableTiles );
             // create new shape
@@ -123,18 +133,20 @@ Phaser.TetraShape = function( game, map, interval, turbo ){
     }
     
     this.fastFalling = function(){ 
-        this.game.time.events.remove( this.eventHandle );
+        this.game.time.events.remove( this.FallingEventHandle );
         this.start( this.turbo );
     }
     
     this.normalFalling = function(){
-        if( this.eventHandle.delay == this.interval ) return;
+        if( this.FallingEventHandle.delay == this.interval ) return;
         
-        this.game.time.events.remove( this.eventHandle );
+        this.game.time.events.remove( this.FallingEventHandle );
         this.start();
     }
     
-    
+    this.destroyLines = function( layerName ){
+        
+    }
     this.reset();
 }
 

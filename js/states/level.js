@@ -18,7 +18,7 @@ Phaser.TetraLevel = function( game, levelName ){
         
         this.ground.resizeWorld();
         
-        this.shape = new Phaser.TetraShape( this.game, this.map, 300 );
+        this.shape = new Phaser.TetraShape( this.game, this.map, {}, function(){ this.restartGame() }.bind(this) );
         this.shape.start();
         
         this.keys = {};
@@ -48,6 +48,10 @@ Phaser.TetraLevel = function( game, levelName ){
         var currentIndex = levels.indexOf( this.game.state.current );
         if( currentIndex < levels.length - 1 ) this.game.state.start( levels[ currentIndex + 1 ] );
         else this.game.state.start( levels[ 0 ] );
+    }
+    
+    this.restartGame = function(){
+        this.game.state.start( this.game.config.levels[ 0 ] );
     }
 }
 

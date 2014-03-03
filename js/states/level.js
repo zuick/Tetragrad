@@ -6,30 +6,43 @@ Phaser.TetraLevel = function( game, levelName ){
     this.levelName = levelName;
 
     this.create = function() {
-        
-        this.game.input.onDown.add( this.nextLevel, this);
-        
         this.game.stage.backgroundColor = '#000';
         
         this.map = this.game.add.tilemap( levelName );
         this.map.addTilesetImage('tileset', 'tileset');
         this.map.setCollision( this.game.config.collidableTiles );
         
+        this.background = this.map.createLayer('background');
         this.ground = this.map.createLayer('ground');
+        this.shapeLayer = this.map.createLayer( 'shape' );
+        
         this.ground.resizeWorld();
         
-        this.shapeLayer = this.map.createLayer( 'shape' );
-        this.shapeLayer.resizeWorld();
-        
         this.shape = new Phaser.TetraShape( this.game, this.map, 300 );
-        this.shape.setShape( 'z', 10, 2, 'a', 11 );
         this.shape.start();
         
-        //this.game.input.keyboard.addKey( Phaser.Keyboard.SPACEBAR ).onDown.add( this.randomTile, this );
+        this.keys = {};
+        this.keys.shapeLeft = this.game.input.keyboard.addKey( Phaser.Keyboard.A );
+        this.keys.shapeRight = this.game.input.keyboard.addKey( Phaser.Keyboard.D );
+        this.keys.shapeRotate = this.game.input.keyboard.addKey( Phaser.Keyboard.W );
+        this.keys.shapeFast = this.game.input.keyboard.addKey( Phaser.Keyboard.S );
         
+        this.keys.shapeLeft.onDown.add( function(){ this.startMove("left") }, this.shape );
+        this.keys.shapeRight.onDown.add( function(){ this.startMove("right") }, this.shape );
+        this.keys.shapeRotate.onDown.add( this.shape.rotate, this.shape );
+        this.keys.shapeFast.onDown.add( this.shape.fastFalling, this.shape );
+
     }
     
-    
+    this.update = function(){
+        if( this.keys.shapeFast.isUp ) this.shape.normalFalling();
+        if( ( this.keys.shapeLeft.isUp || 
+                ( !this.keys.shapeLeft.isUp && !this.keys.shapeLeft.isDown ) ) && 
+            ( this.keys.shapeRight.isUp ||
+                ( !this.keys.shapeRight.isUp && !this.keys.shapeRight.isDown ) ) ) 
+            this.shape.stopMoving();
+        
+    }
     this.nextLevel = function(){
         var levels = this.game.config.levels;
         var currentIndex = levels.indexOf( this.game.state.current );

@@ -7,6 +7,8 @@ Phaser.TetraLevel = function( game, levelName ){
 
     this.create = function() {
         this.game.stage.backgroundColor = '#000';
+        this.game.stage.fullScreenScaleMode = Phaser.StageScaleMode.SHOW_ALL;
+        Phaser.Canvas.setSmoothingEnabled(this.game.context, false);
         
         this.map = this.game.add.tilemap( levelName );
         this.map.addTilesetImage('tileset', 'tileset');
@@ -31,7 +33,9 @@ Phaser.TetraLevel = function( game, levelName ){
         this.keys.shapeRight.onDown.add( function(){ this.startMove("right") }, this.shape );
         this.keys.shapeRotate.onDown.add( this.shape.rotate, this.shape );
         this.keys.shapeFast.onDown.add( this.shape.fastFalling, this.shape );
-
+        
+        
+        game.input.keyboard.addKey( Phaser.Keyboard.F).onDown.add( function(){ this.game.stage.scale.startFullScreen(); }, this);
     }
     
     this.update = function(){

@@ -1,7 +1,7 @@
 (function(){
     var config = {
         width: 640,
-        height: 480,
+        height: 640,
         renderer: Phaser.CANVAS,
         parent: "",
         state: null,
@@ -16,6 +16,8 @@
     }
     
     var game = new Phaser.Game( config );
+    
+    
     
     // add autostarting preloader state
     game.state.add( "preloader", new Phaser.TetraPreloader( game ), true );

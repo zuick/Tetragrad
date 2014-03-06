@@ -164,19 +164,45 @@ Phaser.TetraShape = function( game, map, options, onFail ){
                         // check if tile collidable
                         if( layer.data[k][l] && this.game.config.fallingShapesTiles.indexOf( layer.data[k][l].index ) >= 0 ){
                             tilesInLine.push( { x: l, y: k } );
-                            // check if it last tile in row
-                            if( tilesInLine.length == this.maxLineWidth ){
-                                this.destroyTiles( tilesInLine, layer );
+                        }else if( tilesInLine.length >= this.maxLineWidth ){
+                                this.destroyTiles( tilesInLine, layer )
+                                this.shiftFallingTiles( this.findTilesToFall( tilesInLine, layer ), layer );
                                 break;
-                            }
                         }else{
-                            tilesInLine = [];
+                            tilesInLine = [];                            
                         }
                     }
                 }
             }
         }
         
+    }
+    
+    this.findTilesToFall = function( destroyedTiles, layer ){
+        var tilesToFall = []; 
+        for( var i in destroyedTiles ){
+            var dt = destroyedTiles[i];
+            for( var k = dt.y - 1; k >= 0; k-- ){
+                 // collect all block which looks like falling shapes while the another tile is come 
+                 if( layer.data[k][dt.x] && this.game.config.fallingShapesTiles.indexOf( layer.data[k][dt.x].index ) >= 0 ){
+                     tilesToFall.push( { x: dt.x, y: k, t: layer.data[k][dt.x].index } );
+                 }else{
+                     break;
+                 }
+            }
+        }
+        return tilesToFall;
+    }
+    
+    this.shiftFallingTiles = function( tilesToFall, layer ){
+        // clear tiles
+        for( var i in tilesToFall ){
+            this.map.putTile( 1, tilesToFall[i].x, tilesToFall[i].y, layer.name );
+        }
+        // draw tiles with shift
+        for( var i in tilesToFall ){
+            this.map.putTile( tilesToFall[i].t, tilesToFall[i].x, tilesToFall[i].y + 1, layer.name );
+        }
     }
     this.reset();
 }

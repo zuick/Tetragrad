@@ -7,7 +7,7 @@ Phaser.TetraShape = function( game, map, options, onFail ){
     this.turbo = options.turbo || 50;
     this.moveInterval = options.moveInterval || 200;
     this.maxLineWidth = options.maxLineWidth || 8;
-    
+
     this.moving = false;
     this.rotateSequence = {
         'a': 'b',
@@ -60,6 +60,7 @@ Phaser.TetraShape = function( game, map, options, onFail ){
         if( this.isCollideGround( 0, 1 ) ){
             // merge with ground layer
             this.putShape( this.type, this.x, this.y, this.r, this.tileIndex, "ground" );
+            this.putShape( this.type, this.x, this.y, this.r, 1, "shape" );
             // check if line
             this.destroyLines( "ground" );
             // process collidable objects
@@ -143,8 +144,38 @@ Phaser.TetraShape = function( game, map, options, onFail ){
         this.game.time.events.remove( this.FallingEventHandle );
         this.start();
     }
+
+    this.destroyTiles = function( tiles, layer ){
+        for( var i in tiles ){            
+            this.map.putTile( 1, tiles[i].x, tiles[i].y, layer.name );
+            
+            if( layer.data[tiles[i].x][tiles[i].y] ) layer.data[tiles[i].x][tiles[i].y].collides = false;
+        }
+    }
     
     this.destroyLines = function( layerName ){
+        for( var i in this.map.layers ){
+            var layer = this.map.layers[i];
+            if( layer.name == layerName ){
+                for( var k in layer.data ){
+                    var tilesInLine = [];
+                    for( var l in layer.data[k] ){
+
+                        // check if tile collidable
+                        if( layer.data[k][l] && this.game.config.fallingShapesTiles.indexOf( layer.data[k][l].index ) >= 0 ){
+                            tilesInLine.push( { x: l, y: k } );
+                            // check if it last tile in row
+                            if( tilesInLine.length == this.maxLineWidth ){
+                                this.destroyTiles( tilesInLine, layer );
+                                break;
+                            }
+                        }else{
+                            tilesInLine = [];
+                        }
+                    }
+                }
+            }
+        }
         
     }
     this.reset();

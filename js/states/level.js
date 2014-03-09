@@ -10,32 +10,15 @@ Phaser.TetraLevel = function( game, levelName ){
         this.game.stage.fullScreenScaleMode = Phaser.StageScaleMode.SHOW_ALL;
         Phaser.Canvas.setSmoothingEnabled(this.game.context, false);
         
-        this.map = this.game.add.tilemap( levelName );
-        this.map.addTilesetImage('tileset', 'tileset');
-        this.map.setCollision( this.game.config.collidableTiles );
+        this.tools = new Phaser.TetraTools( this.game );
         
-        this.background = this.map.createLayer('background');
-        this.ground = this.map.createLayer('ground');
-        this.shapeLayer = this.map.createLayer( 'shape' );
+        this.setMap();
         
-        this.ground.resizeWorld();
+        this.setTetraShape();
+                
+        this.setHero();
         
-        this.shape = new Phaser.TetraShape( this.game, this.map, {}, function(){ this.restartGame() }.bind(this) );
-        this.shape.start();
-        
-        this.keys = {};
-        this.keys.shapeLeft = this.game.input.keyboard.addKey( Phaser.Keyboard.A );
-        this.keys.shapeRight = this.game.input.keyboard.addKey( Phaser.Keyboard.D );
-        this.keys.shapeRotate = this.game.input.keyboard.addKey( Phaser.Keyboard.W );
-        this.keys.shapeFast = this.game.input.keyboard.addKey( Phaser.Keyboard.S );
-        
-        this.keys.shapeLeft.onDown.add( function(){ this.startMove("left") }, this.shape );
-        this.keys.shapeRight.onDown.add( function(){ this.startMove("right") }, this.shape );
-        this.keys.shapeRotate.onDown.add( this.shape.rotate, this.shape );
-        this.keys.shapeFast.onDown.add( this.shape.fastFalling, this.shape );
-        
-        
-        game.input.keyboard.addKey( Phaser.Keyboard.F).onDown.add( function(){ this.game.stage.scale.startFullScreen(); }, this);
+        this.setControls();
     }
     
     this.update = function(){
@@ -57,7 +40,47 @@ Phaser.TetraLevel = function( game, levelName ){
     this.restartGame = function(){
         this.game.state.start( this.game.config.levels[ 0 ] );
     }
+    
+    
+    this.setMap = function(){
+        this.map = this.game.add.tilemap( levelName );
+        this.map.addTilesetImage('tileset', 'tileset');
+        this.map.setCollision( this.game.config.collidableTiles );
+        
+        this.background = this.map.createLayer('background');
+        this.ground = this.map.createLayer('ground');
+        this.shapeLayer = this.map.createLayer( 'shape' );
+        
+        this.ground.resizeWorld();
+    }
+    
+    this.setTetraShape = function(){
+        this.shape = new Phaser.TetraShape( this.game, this.map, {}, function(){ this.restartGame() }.bind(this) );
+        this.shape.start();        
+    }
+    
+    this.setHero = function(){
+        var heroXY = this.tools.getObjectsPositionFromMap( this.map, "characters", this.game.config.hero.tileIndex )[0];
+        this.hero = new Phaser.TetraHero( heroXY.x * this.map.tileWidth, heroXY.y * this.map.tileHeight, this.game );
+    }
+    
+    this.setControls = function(){
+        this.keys = {};
+        this.keys.shapeLeft = this.game.input.keyboard.addKey( Phaser.Keyboard.A );
+        this.keys.shapeRight = this.game.input.keyboard.addKey( Phaser.Keyboard.D );
+        this.keys.shapeRotate = this.game.input.keyboard.addKey( Phaser.Keyboard.W );
+        this.keys.shapeFast = this.game.input.keyboard.addKey( Phaser.Keyboard.S );
+        
+        this.keys.shapeLeft.onDown.add( function(){ this.startMove("left") }, this.shape );
+        this.keys.shapeRight.onDown.add( function(){ this.startMove("right") }, this.shape );
+        this.keys.shapeRotate.onDown.add( this.shape.rotate, this.shape );
+        this.keys.shapeFast.onDown.add( this.shape.fastFalling, this.shape );
+        
+        
+        this.game.input.keyboard.addKey( Phaser.Keyboard.F).onDown.add( function(){ this.game.stage.scale.startFullScreen(); }, this);
+    }
+    
 }
 
 Phaser.TetraLevel.prototype = Object.create( Phaser.State.prototype );
-Phaser.TetraLevel.prototype.constructor = Phaser.MyState;
+Phaser.TetraLevel.prototype.constructor = Phaser.TetraLevel;

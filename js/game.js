@@ -12,7 +12,12 @@
         collidableTiles: [ 2, 5, 6, 7, 8, 9, 10, 11, 12 ],
         fallingShapesTiles: [ 9, 10, 11, 12 ],
         fallingShapesTypes: [ 'i', 'l', 'j', 's','z','o','t'],
-        fallingShapesRotates: [ 'a', 'b', 'c', 'd']
+        fallingShapesRotates: [ 'a', 'b', 'c', 'd'],
+        
+        hero: {
+            tileIndex: 17,
+            spritesheet: 'hero'
+        }
     }
     
     var game = new Phaser.Game( config );

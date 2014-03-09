@@ -16,7 +16,8 @@ Phaser.TetraPreloader = function( game ){
             this.game.load.tilemap( levelName, 'assets/' + levelName + '.json', null, Phaser.Tilemap.TILED_JSON);            
         }.bind( this ));
             
-        
+        // load sprites
+        this.game.load.spritesheet('hero', 'assets/hero.png', 32, 32);
     }
 
     this.create = function() {

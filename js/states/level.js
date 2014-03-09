@@ -19,9 +19,18 @@ Phaser.TetraLevel = function( game, levelName ){
         this.setHero();
         
         this.setControls();
+        
+        console.log( this.hero )
     }
     
     this.update = function(){
+        // Physics
+        
+        this.game.physics.collide(this.hero.sprite, this.ground);
+        //this.game.physics.collide(this.hero.sprite, this.shapeLayer );
+        
+        
+        // Tetrashape controls
         if( this.keys.shapeFast.isUp ) this.shape.normalFalling();
         if( ( this.keys.shapeLeft.isUp || 
                 ( !this.keys.shapeLeft.isUp && !this.keys.shapeLeft.isDown ) ) && 
@@ -29,6 +38,8 @@ Phaser.TetraLevel = function( game, levelName ){
                 ( !this.keys.shapeRight.isUp && !this.keys.shapeRight.isDown ) ) ) 
             this.shape.stopMoving();
         
+                
+        this.hero.update( this.cursors );
     }
     this.nextLevel = function(){
         var levels = this.game.config.levels;
@@ -65,6 +76,8 @@ Phaser.TetraLevel = function( game, levelName ){
     }
     
     this.setControls = function(){
+        
+        // Tetra shapes controls
         this.keys = {};
         this.keys.shapeLeft = this.game.input.keyboard.addKey( Phaser.Keyboard.A );
         this.keys.shapeRight = this.game.input.keyboard.addKey( Phaser.Keyboard.D );
@@ -76,8 +89,12 @@ Phaser.TetraLevel = function( game, levelName ){
         this.keys.shapeRotate.onDown.add( this.shape.rotate, this.shape );
         this.keys.shapeFast.onDown.add( this.shape.fastFalling, this.shape );
         
-        
+        // Hero controls
+        this.cursors = this.game.input.keyboard.createCursorKeys(); 
+         
+        // Fullscreen mode
         this.game.input.keyboard.addKey( Phaser.Keyboard.F).onDown.add( function(){ this.game.stage.scale.startFullScreen(); }, this);
+        
     }
     
 }

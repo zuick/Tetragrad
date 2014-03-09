@@ -16,7 +16,12 @@
         
         hero: {
             tileIndex: 17,
-            spritesheet: 'hero'
+            spritesheet: 'hero',
+            bounce: 0.01,
+            gravity: 1000,
+            speed: 120,
+            jump: 390,
+            deathTimeout: 1000
         }
     }
     

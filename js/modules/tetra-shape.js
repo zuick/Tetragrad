@@ -84,8 +84,10 @@ Phaser.TetraShape = function( game, map, options, onFail ){
             for( var block in shapeInfo[nextR] ){
                 var tx = shapeInfo[nextR][block][0] + this.x + offsetX;
                 var ty = shapeInfo[nextR][block][1] + this.y + offsetY; // at the next tick
+                // check wolrd bounds
+                if( tx < 0 || tx > this.map.width - 1 || ty < 0 || ty > this.map.height - 1 ) return true;
                 // check if tile under tx, ty is collidable
-                if( this.map.getTile( tx, ty ) && this.game.config.collidableTiles.indexOf( this.map.getTile( tx, ty, "ground" ).index ) >= 0 ){
+                if( this.map.getTile( tx, ty, "ground" ) && this.game.config.collidableTiles.indexOf( this.map.getTile( tx, ty, "ground" ).index ) >= 0 ){
                     return true;
                 }
             }

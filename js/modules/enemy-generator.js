@@ -33,9 +33,11 @@ Phaser.TetraEnemyGenerator = function( game, options ){
         }
     }
     
-    this.update = function( ground ){
+    this.update = function( colliders ){
         for( var i in this.items ){
-            this.game.physics.collide(this.items[i].sprite, ground);
+            for( var l in colliders ){
+                this.game.physics.collide(this.items[i].sprite, colliders[l] );                
+            }
             this.items[i].update();
         }
     }

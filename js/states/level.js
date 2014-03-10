@@ -13,14 +13,12 @@ Phaser.TetraLevel = function( game, levelName ){
         this.tools = new Phaser.TetraTools( this.game );
         
         this.setMap();
-        
+       
         this.setTetraShape();
                 
         this.setHero();
         
         this.setControls();
-        
-        console.log( this.hero )
     }
     
     this.update = function(){
@@ -28,7 +26,6 @@ Phaser.TetraLevel = function( game, levelName ){
         
         this.game.physics.collide(this.hero.sprite, this.ground);
         //this.game.physics.collide(this.hero.sprite, this.shapeLayer );
-        
         
         // Tetrashape controls
         if( this.keys.shapeFast.isUp ) this.shape.normalFalling();
@@ -56,13 +53,14 @@ Phaser.TetraLevel = function( game, levelName ){
     this.setMap = function(){
         this.map = this.game.add.tilemap( levelName );
         this.map.addTilesetImage('tileset', 'tileset');
-        this.map.setCollision( this.game.config.collidableTiles );
+        this.map.setCollision( this.game.config.collidableTiles, true, "ground" );
+        this.map.setCollision( this.game.config.collidableTiles, true, "shape" );
         
         this.background = this.map.createLayer('background');
         this.ground = this.map.createLayer('ground');
         this.shapeLayer = this.map.createLayer( 'shape' );
         
-        this.ground.resizeWorld();
+        this.background.resizeWorld();
     }
     
     this.setTetraShape = function(){

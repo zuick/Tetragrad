@@ -8,7 +8,7 @@ Phaser.TetraHero = function( x, y, game ){
     this.sprite.body.bounce.y = this.game.config.hero.bounce;
     this.sprite.body.gravity.y = this.game.config.hero.gravity;
     this.sprite.body.collideWorldBounds = true;
-    this.sprite.body.setRectangle( 26, 27, 3, 6 );
+            //this.sprite.body.setRectangle( 26, 27, 3, 6 );
     
     // todo: animations
     

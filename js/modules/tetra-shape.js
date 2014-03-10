@@ -64,7 +64,7 @@ Phaser.TetraShape = function( game, map, options, onFail ){
             // check if line
             this.destroyLines( "ground" );
             // process collidable objects
-            this.map.setCollision( this.game.config.collidableTiles );
+            this.map.setCollision( this.game.config.collidableTiles, true, "ground" );
             // create new shape
             this.reset();
             

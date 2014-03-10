@@ -8,7 +8,7 @@
         transparent: false,
         antialias: false,
         
-        levels: [ 'level1', 'level2' ],
+        levels: [ 'level2', 'level2' ],
         collidableTiles: [ 2, 5, 6, 7, 8, 9, 10, 11, 12 ],
         fallingShapesTiles: [ 9, 10, 11, 12 ],
         fallingShapesTypes: [ 'i', 'l', 'j', 's','z','o','t'],

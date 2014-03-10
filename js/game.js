@@ -21,7 +21,7 @@
             gravity: 1000,
             speed: 180,
             jump: 390,
-            deathTimeout: 1000
+            deathTimeout: 1000,
         },
         
         enemyBlock: {
@@ -31,7 +31,8 @@
             gravity: 500,
             speed: 40,
             jump: 250,
-            deathTimeout: 1000
+            deathTimeout: 1000,
+            enemyHit: 250
         }
     }
     

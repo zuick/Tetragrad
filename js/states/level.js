@@ -21,6 +21,10 @@ Phaser.TetraLevel = function( game, levelName ){
         this.setHero();
         
         this.setControls();
+        
+        this.setBar();
+        
+
     }
     
     this.update = function(){
@@ -41,18 +45,27 @@ Phaser.TetraLevel = function( game, levelName ){
         this.hero.tetraUpdate( this.cursors );
         this.enemyGenerator.update( [ this.ground, this.hero ] );
     }
+    
+    this.render = function(){
+        
+    }
     this.nextLevel = function(){
         var levels = this.game.config.levels;
         var currentIndex = levels.indexOf( this.game.state.current );
         if( currentIndex < levels.length - 1 ) this.game.state.start( levels[ currentIndex + 1 ] );
-        else this.game.state.start( levels[ 0 ] );
+        else this.game.state.start( levels[ 0 ], true, true );
     }
     
     this.restartGame = function(){
         this.game.state.start( this.game.config.levels[ 0 ] );
     }
     
-    
+    this.setBar = function(){
+//        var style = { font: "24px System", fill: "#000", align: "center" };
+//
+//        game.add.text( 5, 5, "lives:", style);
+//        game.add.text( 85, 5, this.hero.lives, style);
+    }
     this.setMap = function(){
         this.map = this.game.add.tilemap( levelName );
         this.map.addTilesetImage('tileset', 'tileset');

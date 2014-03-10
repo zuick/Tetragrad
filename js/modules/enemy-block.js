@@ -1,22 +1,33 @@
 Phaser.TetraEnemyBlock = function( x, y, game ){
-    this.game = game;
+
     
-    this.dead = false;
+    var enemy = game.add.sprite( x, y, game.config.enemyBlock.spritesheet );
     
-    this.sprite = this.game.add.sprite( x, y, this.game.config.enemyBlock.spritesheet );
-    
-    this.sprite.body.bounce.y = this.game.config.enemyBlock.bounce;
-    this.sprite.body.gravity.y = this.game.config.enemyBlock.gravity;
-    this.sprite.body.collideWorldBounds = true;
-    this.sprite.body.setRectangle( 26, 27, 3, 6 );
+    enemy.dead = false;
+        
+    enemy.body.bounce.y = game.config.enemyBlock.bounce;
+    enemy.body.gravity.y = game.config.enemyBlock.gravity;
+    enemy.body.collideWorldBounds = true;
+    enemy.body.setRectangle( 26, 27, 3, 6 );
     // todo: animations
-    this.sprite.animations.add('right', [1,2,3,4], 6, true);
-    this.sprite.animations.add('left', [1,2,3,4], 6, true);
-    this.sprite.frame = 0;
+    enemy.animations.add('right', [1,2,3,2], 6, true);
+    enemy.animations.add('left', [4,5,6,5], 6, true);
+    enemy.animations.add('death', [7,8,9,10], 8, false);
+    enemy.frame = 0;
     
-    this.update = function(){
+    enemy.tetraUpdate = function(){
         
     }
+    
+    enemy.death = function( callback ){
+        this.animations.play('death');
+        this.dead = true;
+        this.body.velocity.x = 0;
+        if( typeof callback  == "function" )
+            setTimeout( callback, game.config.enemyBlock.deathTimeout );
+    }
+    
+    return enemy;
 }
 
 

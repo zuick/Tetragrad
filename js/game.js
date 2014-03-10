@@ -27,10 +27,11 @@
         enemyBlock: {
             tileIndex: 18,
             spritesheet: 'enemy-block',
-            bounce: 0.01,
-            gravity: 1000,
+            bounce: 0.05,
+            gravity: 400,
             speed: 180,
             jump: 390,
+            deathTimeout: 1000
         }
     }
     

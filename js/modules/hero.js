@@ -1,57 +1,54 @@
 Phaser.TetraHero = function( x, y, game ){
-    this.game = game;
+
+    var hero = game.add.sprite( x, y, game.config.hero.spritesheet );
     
-    this.dead = false;
+    hero.name = 'hero';
+    hero.dead = false;
     
-    this.sprite = this.game.add.sprite( x, y, this.game.config.hero.spritesheet );
-    
-    this.sprite.body.bounce.y = this.game.config.hero.bounce;
-    this.sprite.body.gravity.y = this.game.config.hero.gravity;
-    this.sprite.body.collideWorldBounds = true;
-    this.sprite.body.setRectangle( 26, 27, 3, 6 );
+    hero.body.bounce.y = game.config.hero.bounce;
+    hero.body.gravity.y = game.config.hero.gravity;
+    hero.body.collideWorldBounds = true;
+    hero.body.setRectangle( 26, 27, 3, 6 );
     // todo: animations
-    this.sprite.animations.add('right', [1,2], 4, true);
-    this.sprite.animations.add('left', [3,4], 4, true);
-    this.sprite.frame = 0;
+    hero.animations.add('right', [1,2], 4, true);
+    hero.animations.add('left', [3,4], 4, true);
+    hero.animations.add('death', [5,6], 4, false);
+    hero.frame = 0;
     
-    this.death = function( callback ){
+    hero.death = function( callback ){
         this.dead = true;
-        this.sprite.body.velocity.y = -180;
-        this.sprite.body.bounce.y = 0.3;
+        this.body.velocity.y = -180;
+        this.body.bounce.y = 0.3;
         // todo play death animation
+        
+        this.animations.play('death');
+        
         if( typeof callback  == "function" )
-            setTimeout( callback, this.game.config.hero.deathTimeout );
+            setTimeout( callback, game.config.hero.deathTimeout );
     }
     
-    this.update = function( cursors ){
-        this.sprite.body.velocity.x = 0;
+    hero.jump = function(){
+        this.body.velocity.y = - game.config.hero.jump;
+    }
+    
+    hero.tetraUpdate = function( cursors ){
+        this.body.velocity.x = 0;
 
         if( !this.dead ){
             if (cursors.left.isDown){
-                this.sprite.body.velocity.x = - this.game.config.hero.speed;
-                this.sprite.animations.play('left');
+                this.body.velocity.x = - game.config.hero.speed;
+                this.animations.play('left');
             }else if (cursors.right.isDown){
-                this.sprite.body.velocity.x = this.game.config.hero.speed;                
-                this.sprite.animations.play('right')
+                this.body.velocity.x = game.config.hero.speed;                
+                this.animations.play('right')
             }else{
-                this.sprite.animations.stop();
-                this.sprite.frame = 0; 
+                this.animations.stop();
+                this.frame = 0; 
             }
             
-            if(cursors.up.isDown && this.sprite.body.onFloor() ){
-                this.sprite.body.velocity.y = -this.game.config.hero.jump;
-                //this.sprite.frame = 2;
-//                if( cursors.left.isDown ){
-//                    this.sprite.animations.stop();
-//                    this.sprite.frame = 2;
-//                }
-//                if( cursors.right.isDown ){
-//                    this.sprite.animations.stop();
-//                    this.sprite.frame = 4;
-//                }
-            }
-            
-                
+            if( cursors.up.isDown && hero.body.onFloor() ) this.jump();
         }
     }
+    
+    return hero;
 }

@@ -8,7 +8,7 @@ Phaser.TetraHero = function( x, y, game ){
     this.sprite.body.bounce.y = this.game.config.hero.bounce;
     this.sprite.body.gravity.y = this.game.config.hero.gravity;
     this.sprite.body.collideWorldBounds = true;
-            //this.sprite.body.setRectangle( 26, 27, 3, 6 );
+    this.sprite.body.setRectangle( 26, 27, 3, 6 );
     
     // todo: animations
     
@@ -17,7 +17,7 @@ Phaser.TetraHero = function( x, y, game ){
         this.dead = true;
         this.sprite.body.velocity.y = -180;
         this.sprite.body.bounce.y = 0.3;
-        // todoL play death animation
+        // todo play death animation
         if( typeof callback  == "function" )
             setTimeout( callback, this.game.config.hero.deathTimeout );
     }
@@ -30,11 +30,15 @@ Phaser.TetraHero = function( x, y, game ){
                 this.sprite.body.velocity.x = - this.game.config.hero.speed;
                 
             }else if (cursors.right.isDown){
-                this.sprite.body.velocity.x = this.game.config.hero.speed;
+                this.sprite.body.velocity.x = this.game.config.hero.speed;                
                 
             }else{
                 this.sprite.animations.stop();
             }
+            
+            if(cursors.up.isDown && this.sprite.body.onFloor() )
+                this.sprite.body.velocity.y = -this.game.config.hero.jump;
+                
         }
     }
 }

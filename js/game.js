@@ -19,7 +19,7 @@
             spritesheet: 'hero',
             bounce: 0.01,
             gravity: 1000,
-            speed: 120,
+            speed: 180,
             jump: 390,
             deathTimeout: 1000
         }

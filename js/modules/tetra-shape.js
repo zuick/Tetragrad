@@ -65,6 +65,7 @@ Phaser.TetraShape = function( game, map, options, onFail ){
             this.destroyLines( "ground" );
             // process collidable objects
             this.map.setCollision( this.game.config.collidableTiles, true, "ground" );
+            this.map.setCollision( this.game.config.collidableTiles, true, "shape" );
             // create new shape
             this.reset();
             
@@ -151,7 +152,7 @@ Phaser.TetraShape = function( game, map, options, onFail ){
         for( var i in tiles ){            
             this.map.putTile( 1, tiles[i].x, tiles[i].y, layer.name );
             
-            if( layer.data[tiles[i].x][tiles[i].y] ) layer.data[tiles[i].x][tiles[i].y].collides = false;
+            if( layer.data[tiles[i].y][tiles[i].x] ) layer.data[tiles[i].y][tiles[i].x].collides = false;
         }
     }
     
@@ -200,6 +201,7 @@ Phaser.TetraShape = function( game, map, options, onFail ){
         // clear tiles
         for( var i in tilesToFall ){
             this.map.putTile( 1, tilesToFall[i].x, tilesToFall[i].y, layer.name );
+            if( layer.data[tilesToFall[i].y][tilesToFall[i].x] ) layer.data[tilesToFall[i].y][tilesToFall[i].x].collides = false;
         }
         // draw tiles with shift
         for( var i in tilesToFall ){

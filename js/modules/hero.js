@@ -9,9 +9,10 @@ Phaser.TetraHero = function( x, y, game ){
     this.sprite.body.gravity.y = this.game.config.hero.gravity;
     this.sprite.body.collideWorldBounds = true;
     this.sprite.body.setRectangle( 26, 27, 3, 6 );
-    
     // todo: animations
-    
+    this.sprite.animations.add('right', [1,2], 4, true);
+    this.sprite.animations.add('left', [3,4], 4, true);
+    this.sprite.frame = 0;
     
     this.death = function( callback ){
         this.dead = true;
@@ -28,16 +29,28 @@ Phaser.TetraHero = function( x, y, game ){
         if( !this.dead ){
             if (cursors.left.isDown){
                 this.sprite.body.velocity.x = - this.game.config.hero.speed;
-                
+                this.sprite.animations.play('left');
             }else if (cursors.right.isDown){
                 this.sprite.body.velocity.x = this.game.config.hero.speed;                
-                
+                this.sprite.animations.play('right')
             }else{
                 this.sprite.animations.stop();
+                this.sprite.frame = 0; 
             }
             
-            if(cursors.up.isDown && this.sprite.body.onFloor() )
+            if(cursors.up.isDown && this.sprite.body.onFloor() ){
                 this.sprite.body.velocity.y = -this.game.config.hero.jump;
+                //this.sprite.frame = 2;
+//                if( cursors.left.isDown ){
+//                    this.sprite.animations.stop();
+//                    this.sprite.frame = 2;
+//                }
+//                if( cursors.right.isDown ){
+//                    this.sprite.animations.stop();
+//                    this.sprite.frame = 4;
+//                }
+            }
+            
                 
         }
     }

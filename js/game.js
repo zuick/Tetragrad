@@ -33,7 +33,7 @@
     game.state.add( "preloader", new Phaser.TetraPreloader( game ), true );
     
     // add levels to game state manager
-    for( var i in config.levels ){                
+    for( var i in config.levels ){
         game.state.add( config.levels[i], new Phaser.TetraLevel( game, config.levels[i] ) );        
     }
     

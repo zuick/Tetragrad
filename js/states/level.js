@@ -14,17 +14,17 @@ Phaser.TetraLevel = function( game, levelName ){
         
         this.setMap();
        
+        this.setHero();
         this.setTetraShape();
         
         this.setEnemyBlockGenerator();
         
-        this.setHero();
         
         this.setControls();
         
         this.setBar();
         
-
+        this.game.camera.follow( this.hero );
     }
     
     this.update = function(){
@@ -80,7 +80,7 @@ Phaser.TetraLevel = function( game, levelName ){
     }
     
     this.setTetraShape = function(){
-        this.shape = new Phaser.TetraShape( this.game, this.map, {}, function(){ this.restartGame() }.bind(this) );
+        this.shape = new Phaser.TetraShape( this.game, this.map, { hero: this.hero }, function(){ this.restartGame() }.bind(this) );
         this.shape.start();        
     }
     

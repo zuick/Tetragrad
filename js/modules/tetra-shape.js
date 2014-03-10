@@ -7,7 +7,7 @@ Phaser.TetraShape = function( game, map, options, onFail ){
     this.turbo = options.turbo || 50;
     this.moveInterval = options.moveInterval || 200;
     this.maxLineWidth = options.maxLineWidth || 8;
-
+    this.hero = options.hero || false;
     this.moving = false;
     this.rotateSequence = {
         'a': 'b',
@@ -26,7 +26,8 @@ Phaser.TetraShape = function( game, map, options, onFail ){
     
     this.reset = function reset(){
         var type = this.game.config.fallingShapesTypes[Math.floor((Math.random()*this.game.config.fallingShapesTypes.length))];
-        var x = this.map.width / 2;
+        console.log( this.hero)
+        var x = ( this.hero ) ? Math.floor( this.hero.x / this.map.tileWidth ) : this.map.width / 2 - 2;
         var y = 0;
         var r = this.game.config.fallingShapesRotates[Math.floor((Math.random()*this.game.config.fallingShapesRotates.length))];
         var tileIndex = this.game.config.fallingShapesTiles[Math.floor((Math.random()*this.game.config.fallingShapesTiles.length))];        

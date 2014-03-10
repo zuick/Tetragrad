@@ -28,9 +28,9 @@
             tileIndex: 18,
             spritesheet: 'enemy-block',
             bounce: 0.05,
-            gravity: 400,
-            speed: 180,
-            jump: 390,
+            gravity: 500,
+            speed: 40,
+            jump: 250,
             deathTimeout: 1000
         }
     }

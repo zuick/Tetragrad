@@ -1,11 +1,11 @@
-Phaser.TetraEnemyGenerator = function( game, options ){
+Phaser.TetraEnemyGenerator = function( game, options, state ){
     options = options || {};
     this.game = game;
     
     this.type = options.type || 'block';
     this.interval = options.interval || 2000;
     this.maxItems = options.maxItems || 10;
-    
+    this.state = state;
     
     this.items = [];
     
@@ -71,7 +71,7 @@ Phaser.TetraEnemyGenerator = function( game, options ){
   
             object.death( function(){ this.remove( object.genID ); }.bind(this) );
         }else{
-            hero.death( function(){ this.game.state.start( this.game.config.levels[ 0 ], true, true ); }.bind(this));
+            hero.death( function(){ this.state.restartGame(); }.bind(this));
         }
     }
 }

@@ -57,7 +57,7 @@ Phaser.TetraLevel = function( game, levelName ){
     }
     
     this.restartGame = function(){
-        this.game.state.start( this.game.config.levels[ 0 ] );
+        this.game.state.start( this.game.config.levels[ 0 ], true, true );
     }
     
     this.setBar = function(){
@@ -85,7 +85,7 @@ Phaser.TetraLevel = function( game, levelName ){
     }
     
     this.setEnemyBlockGenerator = function(){
-        this.enemyGenerator = new Phaser.TetraEnemyGenerator( this.game );
+        this.enemyGenerator = new Phaser.TetraEnemyGenerator( this.game, {}, this );
         this.enemyGenerator.start();     
     }
     

@@ -26,7 +26,6 @@ Phaser.TetraShape = function( game, map, options, onFail ){
     
     this.reset = function reset(){
         var type = this.game.config.fallingShapesTypes[Math.floor((Math.random()*this.game.config.fallingShapesTypes.length))];
-        console.log( this.hero)
         var x = ( this.hero ) ? Math.floor( this.hero.x / this.map.tileWidth ) : this.map.width / 2 - 2;
         var y = 0;
         var r = this.game.config.fallingShapesRotates[Math.floor((Math.random()*this.game.config.fallingShapesRotates.length))];
@@ -61,7 +60,7 @@ Phaser.TetraShape = function( game, map, options, onFail ){
         if( this.isCollideGround( 0, 1 ) ){
             // merge with ground layer
             this.putShape( this.type, this.x, this.y, this.r, this.tileIndex, "ground" );
-            this.putShape( this.type, this.x, this.y, this.r, 1, "shape" );
+            this.clear();
             // check if line
             this.destroyLines( "ground" );
             // process collidable objects
@@ -98,7 +97,7 @@ Phaser.TetraShape = function( game, map, options, onFail ){
     }
     
     this.falling = function(){
-        this.putShape( this.type, this.x, this.y, this.r, 1 );
+        this.clear();
         this.y++;
         this.putShape( this.type, this.x, this.y, this.r, this.tileIndex );
     }
@@ -124,7 +123,7 @@ Phaser.TetraShape = function( game, map, options, onFail ){
     
     this.move = function( dx ){
         if( this.isCollideGround( dx, 0 ) ) return;
-        this.putShape( this.type, this.x, this.y, this.r, 1 );
+        this.clear()
         this.x = this.x + dx;
         this.putShape( this.type, this.x, this.y, this.r, this.tileIndex ); 
     }
@@ -132,7 +131,7 @@ Phaser.TetraShape = function( game, map, options, onFail ){
     this.rotate = function(){
         if( this.isCollideGround( 0, 0, this.rotateSequence[ this.r ] ) ) return;
 
-        this.putShape( this.type, this.x, this.y, this.r, 1 );
+        this.clear();
         this.r = this.rotateSequence[ this.r ];
         this.putShape( this.type, this.x, this.y, this.r, this.tileIndex );
     }
@@ -208,6 +207,10 @@ Phaser.TetraShape = function( game, map, options, onFail ){
         for( var i in tilesToFall ){
             this.map.putTile( tilesToFall[i].t, tilesToFall[i].x, tilesToFall[i].y + 1, layer.name );
         }
+    }
+    
+    this.clear = function(){
+        this.putShape( this.type, this.x, this.y, this.r, 1 );
     }
     this.reset();
 }

@@ -15,14 +15,12 @@ Phaser.TetraLevel = function( game, levelName ){
         this.setMap();
        
         this.setHero();
+        
         this.setTetraShape();
         
-        this.setEnemyBlockGenerator();
-        
+        this.setEnemyBlockGenerator();     
         
         this.setControls();
-        
-        this.setBar();
         
         this.game.camera.follow( this.hero );
     }
@@ -46,9 +44,6 @@ Phaser.TetraLevel = function( game, levelName ){
         this.enemyGenerator.update( [ this.ground, this.hero ] );
     }
     
-    this.render = function(){
-        
-    }
     this.nextLevel = function(){
         var levels = this.game.config.levels;
         var currentIndex = levels.indexOf( this.game.state.current );
@@ -57,31 +52,42 @@ Phaser.TetraLevel = function( game, levelName ){
     }
     
     this.restartGame = function(){
-        this.game.state.start( this.game.config.levels[ 0 ], true, true );
+        this.setMap();
+        this.setHero();
+        this.setTetraShape();
     }
     
-    this.setBar = function(){
-//        var style = { font: "24px System", fill: "#000", align: "center" };
-//
-//        game.add.text( 5, 5, "lives:", style);
-//        game.add.text( 85, 5, this.hero.lives, style);
-    }
     this.setMap = function(){
-        this.map = this.game.add.tilemap( levelName );
-        this.map.addTilesetImage('tileset', 'tileset');
-        this.map.setCollision( this.game.config.collidableTiles, true, "ground" );
-        this.map.setCollision( this.game.config.collidableTiles, true, "shape" );
+        if( !this.map ){
+            this.map = this.game.add.tilemap( levelName );
+            this.map.addTilesetImage('tileset', 'tileset');
+            this.background = this.map.createLayer('background');
+            this.ground = this.map.createLayer('ground');
+            this.shapeLayer = this.map.createLayer( 'shape' );
+
+            this.map.setCollision( this.game.config.collidableTiles, true, "ground" );
+
+            this.background.resizeWorld();
+            
+            this.initialGroundData = this.tools.getTileMapLayerData( this.map, "ground" );
+        }else{
+            // clear shape layer
+            this.map.fill( 1, 0, 0, this.map.width, this.height, "shape" )
+            // reset ground
+            this.tools.restoreTileMapLayer( this.map, this.initialGroundData, "ground" );
+            this.map.setCollision( this.game.config.collidableTiles, true, "ground" );
+        }
         
-        this.background = this.map.createLayer('background');
-        this.ground = this.map.createLayer('ground');
-        this.shapeLayer = this.map.createLayer( 'shape' );
-        
-        this.background.resizeWorld();
     }
     
     this.setTetraShape = function(){
-        this.shape = new Phaser.TetraShape( this.game, this.map, { hero: this.hero }, function(){ this.restartGame() }.bind(this) );
-        this.shape.start();        
+        if( !this.shape ){
+            this.shape = new Phaser.TetraShape( this.game, this.map, { hero: this.hero }, function(){ this.restartGame() }.bind(this) );
+            this.shape.start();            
+        }else{
+            
+            this.shape.reset();
+        }
     }
     
     this.setEnemyBlockGenerator = function(){
@@ -90,8 +96,14 @@ Phaser.TetraLevel = function( game, levelName ){
     }
     
     this.setHero = function(){
-        var heroXY = this.tools.getObjectsPositionFromMap( this.map, "characters", this.game.config.hero.tileIndex )[0];
-        this.hero = Phaser.TetraHero( heroXY.x * this.map.tileWidth, heroXY.y * this.map.tileHeight, this.game );
+        if( !this.heroInitialXY && !this.hero ){
+            this.heroInitialXY = this.tools.getObjectsPositionFromMap( this.map, "characters", this.game.config.hero.tileIndex )[0];
+            this.hero = Phaser.TetraHero( this.heroInitialXY.x * this.map.tileWidth, this.heroInitialXY.y * this.map.tileHeight, this.game );            
+        }else{
+            this.hero.x = this.heroInitialXY.x * this.map.tileWidth;
+            this.hero.y = this.heroInitialXY.y * this.map.tileHeight;
+            this.hero.init();
+        }
     }
     
     this.setControls = function(){

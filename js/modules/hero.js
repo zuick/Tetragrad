@@ -1,24 +1,7 @@
 Phaser.TetraHero = function( x, y, game ){
 
     var hero = game.add.sprite( x, y, game.config.hero.spritesheet );
-    
-    hero.name = 'hero';
-    hero.dead = false;
-    
-    hero.noTouch = false; // after enemy hits, hero is untouchable some time
-    
-    hero.lives = 3;
-    
-    hero.body.bounce.y = game.config.hero.bounce;
-    hero.body.gravity.y = game.config.hero.gravity;
-    hero.body.collideWorldBounds = true;
-    hero.body.setRectangle( 26, 27, 3, 6 );
-    // todo: animations
-    hero.animations.add('right', [1,2], 4, true);
-    hero.animations.add('left', [3,4], 4, true);
-    hero.animations.add('death', [5,6], 4, false);
-    hero.frame = 0;
-    
+
     hero.death = function( callback ){
         if( this.noTouch ) return;
         this.lives--;
@@ -44,6 +27,23 @@ Phaser.TetraHero = function( x, y, game ){
         setTimeout( function(){ this.noTouch = false; }.bind(this), 200 );
     }
     
+    hero.init = function(){
+        this.name = 'hero';
+        this.dead = false;
+        this.noTouch = false; // after enemy hits, hero is untouchable some time
+        this.lives = 1;
+        this.frame = 0;
+        
+        this.body.bounce.y = game.config.hero.bounce;
+        this.body.gravity.y = game.config.hero.gravity;
+        this.body.collideWorldBounds = true;
+        this.body.setRectangle( 26, 27, 3, 6 );
+        // todo: animations
+        this.animations.add('right', [1,2], 4, true);
+        this.animations.add('left', [3,4], 4, true);
+        this.animations.add('death', [5,6], 4, false);
+    }
+    
     hero.jump = function(){
         this.body.velocity.y = - game.config.hero.jump;
     }
@@ -66,6 +66,8 @@ Phaser.TetraHero = function( x, y, game ){
             if( cursors.up.isDown && hero.body.onFloor() ) this.jump();
         }
     }
+    
+    hero.init();
     
     return hero;
 }

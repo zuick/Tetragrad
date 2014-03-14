@@ -13,11 +13,8 @@ Phaser.TetraLevel = function( game, levelName ){
         this.tools = new Phaser.TetraTools( this.game );
         
         this.setMap();
-       
         this.setHero();
-        
         this.setTetraShape();
-        
         this.setEnemyBlockGenerator();     
         
         this.setControls();
@@ -55,6 +52,7 @@ Phaser.TetraLevel = function( game, levelName ){
         this.setMap();
         this.setHero();
         this.setTetraShape();
+        this.setEnemyBlockGenerator();
     }
     
     this.setMap = function(){
@@ -91,8 +89,14 @@ Phaser.TetraLevel = function( game, levelName ){
     }
     
     this.setEnemyBlockGenerator = function(){
-        this.enemyGenerator = new Phaser.TetraEnemyGenerator( this.game, {}, this );
-        this.enemyGenerator.start();     
+        if( !this.enemyGenerator ){
+            this.enemyGenerator = new Phaser.TetraEnemyGenerator( this.game, {}, this );
+            this.enemyGenerator.start();                 
+        }else{
+            this.enemyGenerator.stop();
+            this.enemyGenerator.removeAll();
+            this.enemyGenerator.start();
+        }
     }
     
     this.setHero = function(){

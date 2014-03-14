@@ -60,6 +60,13 @@ Phaser.TetraEnemyGenerator = function( game, options, state ){
         }
     }
     
+    this.removeAll = function( ID ){
+        for( var i in this.items ){
+            this.items[ i ].destroy();
+        }
+        this.items = [];
+    }
+    
     this.processHeroCollistions = function( hero, enemy ){
         if( enemy.dead || hero.dead ) return false;
             else return true;

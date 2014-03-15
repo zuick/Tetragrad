@@ -15,8 +15,7 @@ Phaser.TetraHero = function( x, y, game ){
             this.animations.play('death');
 
             if( typeof onDeath  == "function" ){
-                setTimeout( onDeath, game.config.enemyBlock.deathTimeout );            
-                console.log( "death" );
+                setTimeout( onDeath, game.config.enemyBlock.deathTimeout );
             }
         }
         
@@ -33,7 +32,7 @@ Phaser.TetraHero = function( x, y, game ){
         this.name = 'hero';
         this.dead = false;
         this.noTouch = false; // after enemy hits, hero is untouchable some time
-        this.lives = 1;
+        this.lives = this.game.config.hero.lives;
         
         this.body.bounce.y = game.config.hero.bounce;
         this.body.gravity.y = game.config.hero.gravity;

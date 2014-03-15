@@ -1,6 +1,6 @@
 Phaser.TetraShape = function( game, map, options, onFail ){
     options = options || {};
-    
+    console.log(" create tetrashape")
     this.game = game;
     this.map = map;
     this.interval = options.interval || 500;

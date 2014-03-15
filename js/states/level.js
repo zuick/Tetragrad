@@ -17,8 +17,10 @@ Phaser.TetraLevel = function( game, levelName ){
         this.setTetraShape();
         this.setEnemyBlockGenerator();
         this.setControls();
-        
+        this.setLivesSprite();        
+
         this.game.camera.follow( this.game.world.hero );
+
     }
     
     this.update = function(){
@@ -34,16 +36,18 @@ Phaser.TetraLevel = function( game, levelName ){
                 ( !this.keys.shapeRight.isUp && !this.keys.shapeRight.isDown ) ) ) 
             this.shape.stopMoving();
         
-                
         this.game.world.hero.tetraUpdate( this.cursors );
         this.game.world.enemyGenerator.update( [ this.game.world.ground, this.game.world.hero ] );
+        
+        this.updLivesSprite();
+
     }
     
     this.nextLevel = function(){
         var levels = this.game.config.levels;
         var currentIndex = levels.indexOf( this.game.state.current );
-        if( currentIndex < levels.length - 1 ) this.game.state.start( levels[ currentIndex + 1 ], true );
-        else this.game.state.start( levels[ 0 ], true );
+        if( currentIndex < levels.length - 1 ) this.game.state.start( levels[ currentIndex + 1 ] );
+        else this.game.state.start( levels[ 0 ] );
     }
     
     this.restartGame = function(){
@@ -51,11 +55,12 @@ Phaser.TetraLevel = function( game, levelName ){
         this.setHero();
         this.setTetraShape();
         this.setEnemyBlockGenerator();
+        this.setLivesSprite();
     }
     
     this.pause = function(){
         this.game.world.enemyGenerator.stop();
-        this.game.state.start( "pause" );
+        this.game.state.start( "pause", true, true );
     }
     
     this.setMap = function(){
@@ -91,6 +96,7 @@ Phaser.TetraLevel = function( game, levelName ){
             this.shape.start();            
         }else{
             this.shape.reset();
+            this.shape.start();
         }
     }
     
@@ -133,6 +139,25 @@ Phaser.TetraLevel = function( game, levelName ){
         this.game.input.keyboard.addKey( Phaser.Keyboard.P).onDown.add( this.pause, this);
         
     }
+
+    this.setLivesSprite = function(){
+        if(this.game.world.hero.lives > 0){  
+            this.lives = this.game.add.sprite(0, 0, 'lives');
+            this.lives.fixedToCamera = true;
+            this.lives.cameraOffset.x = 32;
+            this.lives.cameraOffset.y = 32;
+            this.lives.frame = 0;
+        }
+    }
+    this.updLivesSprite = function(){
+        if( this.game.world.hero.lives >= 0 ){
+            this.lives.frame = Math.floor( this.game.config.livesSpriteLength - this.game.world.hero.lives/this.game.config.hero.lives * this.game.config.livesSpriteLength );
+        }else{
+            this.lives.frame = this.game.config.livesSpriteLength - 1;
+        }
+    }
+
+
     
 }
 

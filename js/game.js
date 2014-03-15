@@ -21,6 +21,7 @@
             gravity: 1000,
             speed: 180,
             jump: 390,
+            lives: 5,
             deathTimeout: 1000,
         },
         
@@ -33,7 +34,9 @@
             jump: 250,
             deathTimeout: 1000,
             enemyHit: 250
-        }
+        },
+        
+        livesSpriteLength: 6
     }
     
     var game = new Phaser.Game( config );

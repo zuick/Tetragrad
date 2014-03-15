@@ -8,6 +8,7 @@ Phaser.TetraHero = function( x, y, game ){
     hero.noTouch = false; // after enemy hits, hero is untouchable some time
     
     hero.lives = 3;
+    hero.maxLives = 3;
     
     hero.body.bounce.y = game.config.hero.bounce;
     hero.body.gravity.y = game.config.hero.gravity;
@@ -19,7 +20,7 @@ Phaser.TetraHero = function( x, y, game ){
     hero.animations.add('death', [5,6], 4, false);
     hero.frame = 0;
     
-    hero.death = function( callback ){
+    hero.death = function( callback, onhit ){
         if( this.noTouch ) return;
         this.lives--;
         

@@ -23,6 +23,8 @@ Phaser.TetraLevel = function( game, levelName ){
         this.setControls();
         
         this.setBar();
+
+        this.setLivesSprite();
         
         this.game.camera.follow( this.hero );
     }
@@ -44,6 +46,10 @@ Phaser.TetraLevel = function( game, levelName ){
                 
         this.hero.tetraUpdate( this.cursors );
         this.enemyGenerator.update( [ this.ground, this.hero ] );
+
+        this.updLivesSprite();
+
+        
     }
     
     this.render = function(){
@@ -115,6 +121,31 @@ Phaser.TetraLevel = function( game, levelName ){
         this.game.input.keyboard.addKey( Phaser.Keyboard.F).onDown.add( function(){ this.game.stage.scale.startFullScreen(); }, this);
         
     }
+
+    this.setLivesSprite = function(){
+
+        if(this.hero.lives>0){  
+            this.lives = this.game.add.sprite(0, 0, 'lives');
+            this.lives.fixedToCamera = true;
+            this.lives.cameraOffset.x = 32;
+            this.lives.cameraOffset.y = 32;
+            this.lives.frame=0;
+
+        }
+
+    }
+    this.updLivesSprite = function(){
+
+        if(this.hero.lives>=0){
+            this.lives.frame= Math.floor(6 - this.hero.lives/this.hero.maxLives * 6);
+
+        }else{
+            this.lives.frame=5;
+        }  
+
+    }
+
+
     
 }
 

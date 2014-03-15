@@ -8,7 +8,7 @@
         transparent: false,
         antialias: false,
         
-        levels: [ 'level2', 'level2' ],
+        levels: [ 'level1', 'level2' ],
         collidableTiles: [ 2, 5, 6, 7, 8, 9, 10, 11, 12 ],
         fallingShapesTiles: [ 9, 10, 11, 12 ],
         fallingShapesTypes: [ 'i', 'l', 'j', 's','z','o','t'],
@@ -42,6 +42,7 @@
     
     // add autostarting preloader state
     game.state.add( "preloader", new Phaser.TetraPreloader( game ), true );
+    game.state.add( "pause", new Phaser.TetraPause( game ) );
     
     // add levels to game state manager
     for( var i in config.levels ){

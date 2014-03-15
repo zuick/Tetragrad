@@ -2,7 +2,7 @@ Phaser.TetraHero = function( x, y, game ){
 
     var hero = game.add.sprite( x, y, game.config.hero.spritesheet );
 
-    hero.death = function( callback ){
+    hero.death = function( onDeath ){
         if( this.noTouch ) return;
         this.lives--;
         
@@ -14,8 +14,10 @@ Phaser.TetraHero = function( x, y, game ){
 
             this.animations.play('death');
 
-            if( typeof callback  == "function" )
-                setTimeout( callback, game.config.enemyBlock.deathTimeout );            
+            if( typeof onDeath  == "function" ){
+                setTimeout( onDeath, game.config.enemyBlock.deathTimeout );            
+                console.log( "death" );
+            }
         }
         
         if( this.body.touching.left ) this.body.velocity.x = game.config.enemyBlock.enemyHit;
@@ -32,7 +34,6 @@ Phaser.TetraHero = function( x, y, game ){
         this.dead = false;
         this.noTouch = false; // after enemy hits, hero is untouchable some time
         this.lives = 1;
-        this.frame = 0;
         
         this.body.bounce.y = game.config.hero.bounce;
         this.body.gravity.y = game.config.hero.gravity;
@@ -42,6 +43,7 @@ Phaser.TetraHero = function( x, y, game ){
         this.animations.add('right', [1,2], 4, true);
         this.animations.add('left', [3,4], 4, true);
         this.animations.add('death', [5,6], 4, false);
+        this.frame = 0;
     }
     
     hero.jump = function(){

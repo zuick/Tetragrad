@@ -22,7 +22,7 @@ Phaser.TetraPreloader = function( game ){
     }
 
     this.create = function() {
-        this.game.state.start( this.game.config.levels[0] );
+        this.game.state.start( this.game.config.levels[0], true. true );
     }
 }
 

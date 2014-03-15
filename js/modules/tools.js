@@ -30,7 +30,6 @@ Phaser.TetraTools = function( game ){
                 result.push({x: l , y: k, tile: index, collides: layer.data[k][l].collides });
             }
         }
-        console.log( result.length, layer );
         return result;
     }
     

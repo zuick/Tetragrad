@@ -19,7 +19,7 @@ Phaser.TetraPreloader = function( game ){
         // load sprites
         this.game.load.spritesheet('hero', 'assets/hero-sprite.png', 32, 32);
         this.game.load.spritesheet('enemy-block', 'assets/enemy-block-sprite.png', 32, 32);
-        this.game.load.spritesheet('lives', 'assets/lives2.png', 64, 64);
+        this.game.load.spritesheet('lives', 'assets/lives.png', 48, 48);
     }
 
     this.create = function() {

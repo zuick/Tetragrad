@@ -31,7 +31,7 @@
             gravity: 1000,
             speed: 180,
             jump: 390,
-            lives: 1,
+            lives: 5,
             deathTimeout: 1000,
         },
         

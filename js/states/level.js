@@ -133,8 +133,8 @@ Phaser.TetraLevel = function( game, levelName ){
         if(this.hero.lives > 0){  
             this.lives = this.game.add.sprite(0, 0, 'lives');
             this.lives.fixedToCamera = true;
-            this.lives.cameraOffset.x = 32;
-            this.lives.cameraOffset.y = 32;
+            this.lives.cameraOffset.x = 24;
+            this.lives.cameraOffset.y = 24;
             this.lives.frame = 0;
         }
     }

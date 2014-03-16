@@ -8,6 +8,8 @@ Phaser.TetraShape = function( game, map, options, onFail ){
     this.moveInterval = options.moveInterval || 200;
     this.maxLineWidth = options.maxLineWidth || 8;
     this.hero = options.hero || false;
+    this.enemyGenerator = options.enemyGenerator || false;
+
     this.moving = false;
     this.rotateSequence = {
         'a': 'b',
@@ -73,7 +75,11 @@ Phaser.TetraShape = function( game, map, options, onFail ){
     }
     
     this.tick = function(){     
-        if( this.isCollideHero() ) this.hero.death();
+        if( this.isCollideSprite( this.hero ) ) this.hero.death();
+        
+        this.enemyGenerator.items.forEach( function( enemy ){
+            if( this.isCollideSprite( enemy ) ) enemy.death( function(){ this.enemyGenerator.remove( enemy.genID ); }.bind(this) );
+        }.bind(this));
         
         if( this.isCollideGround( 0, 1 ) ){
             // merge with ground layer
@@ -88,10 +94,10 @@ Phaser.TetraShape = function( game, map, options, onFail ){
             this.reset();
             
         }else{
-            this.falling(); 
-        }
-        
+            this.falling();
+        }        
     }
+    
     this.isPointInsideShape = function( px, py ){
         var tw = this.map.tileWidth;
         var shapeInfo = Phaser.TetraShapesInfo[this.type];
@@ -105,11 +111,11 @@ Phaser.TetraShape = function( game, map, options, onFail ){
         return false;
     }
     
-    this.isCollideHero = function(){
-        var hx = parseInt( this.hero.body.x );
-        var hy = parseInt( this.hero.body.y );
-        var hw = parseInt( this.hero.body.width );
-        var hh = parseInt( this.hero.body.height );
+    this.isCollideSprite = function( sprite ){
+        var hx = parseInt( sprite.body.x );
+        var hy = parseInt( sprite.body.y );
+        var hw = parseInt( sprite.body.width );
+        var hh = parseInt( sprite.body.height );
         
         if( this.isPointInsideShape( hx, hy ) || 
             this.isPointInsideShape( hx + hw, hy) || 
@@ -119,6 +125,9 @@ Phaser.TetraShape = function( game, map, options, onFail ){
         return false;
     }
     
+    this.isCollideEnemy = function( enemy ){
+        
+    }
     /* check if shape is collide blocks on ground 
       offsetX, offsetY - is where shape is going to move 
       nextR - where shape is going to be rotate

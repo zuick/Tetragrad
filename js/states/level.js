@@ -12,8 +12,8 @@ Phaser.TetraLevel = function( game, levelName ){
                     
         this.setMap();
         this.setHero();
-        this.setTetraShape();
         this.setEnemyBlockGenerator();
+        this.setTetraShape();
         this.setControls();
         this.setLivesSprite();  
         
@@ -94,7 +94,7 @@ Phaser.TetraLevel = function( game, levelName ){
     }
     
     this.setTetraShape = function(){
-        this.shape = new Phaser.TetraShape( this.game, this.map, { hero: this.hero }, function(){ this.restartLevel(); }.bind(this)  );        
+        this.shape = new Phaser.TetraShape( this.game, this.map, { hero: this.hero, enemyGenerator: this.enemyGenerator }, function(){ this.restartLevel(); }.bind(this)  );        
         this.shape.start();
     }
     

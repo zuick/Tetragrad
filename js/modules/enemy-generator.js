@@ -4,7 +4,7 @@ Phaser.TetraEnemyGenerator = function( game, options, state ){
     
     this.type = options.type || 'block';
     this.interval = options.interval || 500;
-    this.maxItems = options.maxItems || 5;
+    this.maxItems = options.maxItems || 0;
     this.state = state;
     
     this.items = [];

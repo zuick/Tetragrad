@@ -26,7 +26,18 @@ Phaser.TetraShape = function( game, map, options, onFail ){
     
     this.reset = function reset(){
         var type = this.game.config.fallingShapesTypes[Math.floor((Math.random()*this.game.config.fallingShapesTypes.length))];
-        var x = ( this.hero ) ? Math.floor( this.hero.x / this.map.tileWidth ) : this.map.width / 2 - 2;
+
+        
+        var x = 0;
+
+        if(Math.floor( this.hero.x / this.map.tileWidth ) < 0){
+            x = 0;
+        } else if(this.map.width - Math.floor( this.hero.x / this.map.tileWidth ) < 3) {
+            x =  this.map.width - 3;
+        } else {
+            x = ( this.hero ) ? Math.floor( this.hero.x / this.map.tileWidth ) : this.map.width / 2 - 2;
+        }
+
         var y = 0;
         
         var r = this.game.config.fallingShapesRotates[Math.floor((Math.random()*this.game.config.fallingShapesRotates.length))];
@@ -99,6 +110,45 @@ Phaser.TetraShape = function( game, map, options, onFail ){
             }
         }
         return false;
+    }
+
+    this.isBeyondBorder = function(lfBorder, rtBorder, curX, nextR){
+        var shapeInfo = Phaser.TetraShapesInfo[this.type];
+        var maxTxLf = 0;
+        var maxTxRt = 0;
+
+        if(shapeInfo){
+                        
+            for( var block in shapeInfo[nextR] ){
+
+                var txLf = 0;
+                var txRt = 0;
+
+
+                if ((shapeInfo[nextR][block][0] + curX - lfBorder) < 0){
+                    txLf  = -1 * (shapeInfo[nextR][block][0] + curX - lfBorder);
+                }
+
+
+                if ((rtBorder - (shapeInfo[nextR][block][0] + curX)) < 0){
+                    txRt  =  (rtBorder - (shapeInfo[nextR][block][0] + curX));
+                }
+
+
+
+                maxTxLf = (maxTxLf < txLf ? txLf : maxTxLf);
+                maxTxRt = (maxTxRt < txRt ? txRt : maxTxRt);
+
+            }
+
+             
+          }
+
+        if(maxTxLf !== 0){
+                return maxTxLf;
+         }
+          return  maxTxRt;
+  
     }
     
     this.falling = function(){

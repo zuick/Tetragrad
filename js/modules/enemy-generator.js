@@ -78,7 +78,7 @@ Phaser.TetraEnemyGenerator = function( game, options, state ){
   
             object.death( function(){ this.remove( object.genID ); }.bind(this) );
         }else{
-            hero.death( function(){ this.state.create(); }.bind(this));
+            hero.death( function(){ this.state.restartLevel(); }.bind(this));
         }
     }
     

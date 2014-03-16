@@ -43,11 +43,38 @@ Phaser.TetraLevel = function( game, levelName ){
 
     }
     
+    this.restartLevel = function(){
+        this.clean();
+        this.create();
+    }
+    
     this.nextLevel = function(){
+        this.enemyGenerator.stop();
+        this.clean();
+        
         var levels = this.game.config.levels;
         var currentIndex = levels.indexOf( this.game.state.current );
-        if( currentIndex < levels.length - 1 ) this.game.state.start( levels[ currentIndex + 1 ] );
-        else this.game.state.start( levels[ 0 ] );
+        if( currentIndex < levels.length - 1 ) this.game.state.start( levels[ currentIndex + 1 ], true, true );
+        else this.game.state.start( levels[ 0 ], true, true );
+    }
+    
+    this.pause = function(){
+        this.enemyGenerator.stop();
+        this.game.state.start( "pause", true, true );
+    }
+    
+    this.clean = function(){
+        if( this.tools ) this.tools.destroy();
+        if( this.map ) this.map.destroy();
+        if( this.shape ) this.shape.destroy();
+        if( this.enemyGenerator ) this.enemyGenerator.destroy();
+        if( this.hero ) this.hero.destroy();
+        
+        if( this.keys ){
+            for( var i in this.keys ){
+                this.game.input.keyboard.removeKey( this.keys[i].keyCode );
+            }
+        }
     }
     
     this.setTools = function(){
@@ -56,14 +83,7 @@ Phaser.TetraLevel = function( game, levelName ){
     }
     
     this.setMap = function(){
-        if( this.map ){            
-            this.map.destroy();
-            this.map = this.game.add.tilemap( levelName );
-        }else{
-            this.map = this.game.add.tilemap( levelName );
-            
-        }
-        
+        this.map = this.game.add.tilemap( levelName );
         this.map.addTilesetImage('tileset', 'tileset');
         this.background = this.map.createLayer('background');
         this.ground = this.map.createLayer('ground');
@@ -76,49 +96,31 @@ Phaser.TetraLevel = function( game, levelName ){
     }
     
     this.setTetraShape = function(){
-        if( this.shape ){
-            this.shape.destroy();            
-        }
-        
-        this.shape = new Phaser.TetraShape( this.game, this.map, { hero: this.hero }, function(){ this.create(); }.bind(this)  );
-        
+        this.shape = new Phaser.TetraShape( this.game, this.map, { hero: this.hero }, function(){ this.restartLevel(); }.bind(this)  );        
         this.shape.start();
     }
     
     this.setEnemyBlockGenerator = function(){
-        if( this.enemyGenerator ){
-            this.enemyGenerator.destroy();
-        }
         this.enemyGenerator = new Phaser.TetraEnemyGenerator( this.game, {}, this );
         this.enemyGenerator.start();
     }
     
-    this.setHero = function(){
-        if( this.hero ){
-            this.hero.destroy();
-        }
-        
+    this.setHero = function(){        
         this.heroInitialXY = this.tools.getObjectsPositionFromMap( this.map, "characters", this.game.config.hero.tileIndex )[0];
         this.hero = Phaser.TetraHero( this.heroInitialXY.x * this.map.tileWidth, this.heroInitialXY.y * this.map.tileHeight, this.game );            
     }
     
     this.setControls = function(){
         
-        // if already exists
-        if( this.keys ){
-            for( var i in this.keys ){
-                this.game.input.keyboard.removeKey( this.keys[i].keyCode );
-            }
-        }else{
-            this.keys = {};
-        }
-        
+        this.keys = {};
+
         // create keyboard handlers        
         this.keys.shapeLeft = this.game.input.keyboard.addKey( Phaser.Keyboard.A );
         this.keys.shapeRight = this.game.input.keyboard.addKey( Phaser.Keyboard.D );
         this.keys.shapeRotate = this.game.input.keyboard.addKey( Phaser.Keyboard.W );
         this.keys.shapeFast = this.game.input.keyboard.addKey( Phaser.Keyboard.S );
         this.keys.fullscreen = this.game.input.keyboard.addKey( Phaser.Keyboard.F);
+        this.keys.next = this.game.input.keyboard.addKey( Phaser.Keyboard.N );
         this.keys.pause = this.game.input.keyboard.addKey( Phaser.Keyboard.P );
         this.keys.cursors = this.game.input.keyboard.createCursorKeys(); 
 
@@ -127,6 +129,7 @@ Phaser.TetraLevel = function( game, levelName ){
         this.keys.shapeRight.onDown.add( function(){ this.startMove("right") }, this.shape );
         this.keys.shapeRotate.onDown.add( this.shape.rotate, this.shape );
         this.keys.shapeFast.onDown.add( this.shape.fastFalling, this.shape );
+        this.keys.next.onDown.add( this.nextLevel, this );
         
         this.keys.fullscreen.onDown.add( function(){ this.game.stage.scale.startFullScreen(); }, this);
         this.keys.pause.onDown.add( this.pause, this);
@@ -150,13 +153,6 @@ Phaser.TetraLevel = function( game, levelName ){
             this.lives.frame = this.game.config.livesSpriteLength - 1;
         }
     }
-    
-    this.pause = function(){
-        this.enemyGenerator.stop();
-        this.game.state.start( "pause", true, true );
-    }
-
-    
 }
 
 Phaser.TetraLevel.prototype = Object.create( Phaser.State.prototype );

@@ -18,9 +18,7 @@ Phaser.TetraEnemyGenerator = function( game, options, state ){
     }
     
     this.create = function(){
-        if( this.items.length >= this.maxItems ){
-            
-        }else{
+        if( this.items.length < this.maxItems && this.game ){
             var ex = Math.floor( Math.random() * this.game.world.width );
             var ey = Math.floor( Math.random() * this.game.world.height / 2 );
             switch( this.type ){

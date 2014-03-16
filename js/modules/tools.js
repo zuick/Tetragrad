@@ -1,6 +1,5 @@
-Phaser.TetraTools = function( game ){
-    this.game;
-    this.getObjectsPositionFromMap = function ( map, layerName, tileIndex ){
+Phaser.TetraTools = {
+    getObjectsPositionFromMap: function ( map, layerName, tileIndex ){
         var result = [];
         // find layer
         for( var i in map.layers ){
@@ -19,31 +18,20 @@ Phaser.TetraTools = function( game ){
         }
 
         return result;
-    }
+    },
     
-    this.getTileMapLayerData = function( map, layerName ){
-        var result = [];
-        var layer = map.layers[ map.getLayerIndex( layerName ) ];
-        for( var k in layer.data ){
-            for( var l in layer.data[k] ){
-                var index = ( layer.data[k][l] && layer.data[k][l].index ) ? layer.data[k][l].index : 0;
-                result.push({x: l , y: k, tile: index, collides: layer.data[k][l].collides });
-            }
+    getLevelIndex: function( levels, levelName ){
+        for( var i in levels ){
+            if( levels[i].name == levelName ) return parseInt(i);
         }
-        return result;
-    }
+        return -1;
+    },
     
-    this.restoreTileMapLayer = function( map, data, layerName ){
-        var layer = map.layers[ map.getLayerIndex( layerName ) ];
-        for( var i in data ){
-            map.putTile( data[i].tile, data[i].x, data[i].y, layerName );
-            layer.data[data[i].y][data[i].x].collides = data[i].collides;
-        }
+    getLevelTitle: function( levels, levelName ){
+        var index = this.getLevelIndex( levels, levelName );
+        return ( index >= 0 ) ? levels[ index ].title : "Уровень не найден";
     }
-    
-    this.destroy = function(){
-        delete this.game;
-    }
+
 }
 
 

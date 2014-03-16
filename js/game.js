@@ -65,6 +65,26 @@
                 },
                 shapes: true
             },
+            {
+                name: 'level7',
+                title: 'Глава 4.\nЛинии.',
+                enemies: { 
+                    disable: false,
+                    maxItems: 4,
+                    interval: 1000
+                },
+                shapes: true
+            },
+            {
+                name: 'level8',
+                title: 'Глава 5.\nНеожиданный конец.',
+                enemies: { 
+                    disable: false,
+                    maxItems: 2,
+                    interval: 1000
+                },
+                shapes: false
+            },
         ],
         
         collidableTiles: [ 2, 5, 6, 7, 8, 9, 10, 11, 12, 21, 22, 23, 24 ],
@@ -99,8 +119,8 @@
         },
         
         livesSpriteLength: 6,
-        introDelay: 500,
-        bumperDelay: 1000
+        introDelay: 2000,
+        bumperDelay: 3000
     }
     
     var game = new Phaser.Game( config );

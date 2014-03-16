@@ -26,7 +26,7 @@ Phaser.TetraLevel = function( game, levelName ){
     this.update = function(){
         // Physics
         this.game.physics.collide(this.hero, this.ground);
-        this.game.physics.collide(this.hero, this.shapeLayer);
+        if(!this.hero.dead ) this.game.physics.collide(this.hero, this.shapeLayer);
         this.game.physics.collide(this.hero, this.door, function(a,b){this.nextLevel();},null,this);
 
         // Tetrashape controls
@@ -65,6 +65,7 @@ Phaser.TetraLevel = function( game, levelName ){
     }
     
     this.clean = function(){
+        this.game.world.destroy();
         if( this.lives ) this.lives.destroy();
         if( this.map ) this.map.destroy();
         if( this.shape ) this.shape.destroy();
@@ -104,7 +105,7 @@ Phaser.TetraLevel = function( game, levelName ){
     
     this.setHero = function(){        
         this.heroInitialXY = Phaser.TetraTools.getObjectsPositionFromMap( this.map, "characters", this.game.config.hero.tileIndex )[0];
-        this.hero = Phaser.TetraHero( this.heroInitialXY.x * this.map.tileWidth, this.heroInitialXY.y * this.map.tileHeight, this.game );            
+        this.hero = Phaser.TetraHero( this.heroInitialXY.x * this.map.tileWidth, this.heroInitialXY.y * this.map.tileHeight, this.game, function(){ this.restartLevel(); }.bind(this) );            
     }
     
     this.setControls = function(){

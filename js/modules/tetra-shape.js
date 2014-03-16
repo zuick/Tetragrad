@@ -3,7 +3,7 @@ Phaser.TetraShape = function( game, map, options, onFail ){
     
     this.game = game;
     this.map = map;
-    this.interval = options.interval || 500;
+    this.interval = options.interval || 400;
     this.turbo = options.turbo || 50;
     this.moveInterval = options.moveInterval || 200;
     this.maxLineWidth = options.maxLineWidth || 8;
@@ -72,7 +72,9 @@ Phaser.TetraShape = function( game, map, options, onFail ){
         this.game.time.events.remove( this.FallingEventHandle );
     }
     
-    this.tick = function(){
+    this.tick = function(){     
+        if( this.isCollideHero() ) this.hero.death();
+        
         if( this.isCollideGround( 0, 1 ) ){
             // merge with ground layer
             this.putShape( this.type, this.x, this.y, this.r, this.tileIndex, "ground" );
@@ -88,6 +90,33 @@ Phaser.TetraShape = function( game, map, options, onFail ){
         }else{
             this.falling(); 
         }
+        
+    }
+    this.isPointInsideShape = function( px, py ){
+        var tw = this.map.tileWidth;
+        var shapeInfo = Phaser.TetraShapesInfo[this.type];
+        if( shapeInfo && shapeInfo[this.r] ){
+            for( var block in shapeInfo[this.r] ){
+                var x = ( shapeInfo[this.r][block][0] + this.x ) * tw;
+                var y = ( shapeInfo[this.r][block][1] + this.y ) * tw;
+                if( px > x && px < x + tw && py > y && py < y + tw ) return true;                        
+            }
+        }
+        return false;
+    }
+    
+    this.isCollideHero = function(){
+        var hx = parseInt( this.hero.body.x );
+        var hy = parseInt( this.hero.body.y );
+        var hw = parseInt( this.hero.body.width );
+        var hh = parseInt( this.hero.body.height );
+        
+        if( this.isPointInsideShape( hx, hy ) || 
+            this.isPointInsideShape( hx + hw, hy) || 
+            this.isPointInsideShape( hx, hy + hh ) || 
+            this.isPointInsideShape( hx + hw, hy + hh ) ) return true;
+    
+        return false;
     }
     
     /* check if shape is collide blocks on ground 

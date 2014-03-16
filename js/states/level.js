@@ -117,6 +117,7 @@ Phaser.TetraLevel = function( game, level ){
         this.keys.shapeFast = this.game.input.keyboard.addKey( Phaser.Keyboard.S );
         this.keys.fullscreen = this.game.input.keyboard.addKey( Phaser.Keyboard.F);
         this.keys.next = this.game.input.keyboard.addKey( Phaser.Keyboard.N );
+        this.keys.restart = this.game.input.keyboard.addKey( Phaser.Keyboard.R );
         this.keys.pause = this.game.input.keyboard.addKey( Phaser.Keyboard.P );
         this.keys.cursors = this.game.input.keyboard.createCursorKeys(); 
 
@@ -126,6 +127,7 @@ Phaser.TetraLevel = function( game, level ){
         this.keys.shapeRotate.onDown.add( this.shape.rotate, this.shape );
         this.keys.shapeFast.onDown.add( this.shape.fastFalling, this.shape );
         this.keys.next.onDown.add( this.nextLevel, this );
+        this.keys.restart.onDown.add( this.restartLevel, this );
         
         this.keys.fullscreen.onDown.add( function(){ this.game.stage.scale.startFullScreen(); }, this);
         this.keys.pause.onDown.add( this.pause, this);
@@ -155,11 +157,12 @@ Phaser.TetraLevel = function( game, level ){
         var doorXY = Phaser.TetraTools.getObjectsPositionFromMap( this.map, "characters", this.game.config.door.tileIndex )[0];
         this.door = this.game.add.sprite(doorXY.x * this.map.tileWidth, doorXY.y  * this.map.tileHeight, 'door');
         this.door.animations.add('next', [0,1,2,3,4,5], 7, true);
+        this.door.body.setRectangle( 20, 20, 0, 0 );
         this.door.frame = 0; 
         this.door.animations.play('next');
     }
     
-
+    
 
 }
 

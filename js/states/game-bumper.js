@@ -24,5 +24,5 @@ Phaser.TetraGameBumper = function( game, levelName ){
     }
 }
 
-Phaser.GameBumper.prototype = Object.create( Phaser.State.prototype );
-Phaser.GameBumper.prototype.constructor = Phaser.GameBumper;
+Phaser.TetraGameBumper.prototype = Object.create( Phaser.State.prototype );
+Phaser.TetraGameBumper.prototype.constructor = Phaser.TetraGameBumper;

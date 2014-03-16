@@ -18,6 +18,7 @@ Phaser.TetraHero = function( x, y, game, onDeath ){
     }
     
     hero.death = function(){
+        if( this.dead ) return;
         this.dead = true;
         this.body.velocity.y = -180;
         this.body.bounce.y = 0.3;

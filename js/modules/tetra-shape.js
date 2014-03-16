@@ -75,7 +75,9 @@ Phaser.TetraShape = function( game, map, options, onFail ){
     }
     
     this.tick = function(){     
-        if( this.isCollideSprite( this.hero ) ) this.hero.death();
+        if( this.isCollideSprite( this.hero ) ){
+            this.hero.death();
+        }
         
         this.enemyGenerator.items.forEach( function( enemy ){
             if( this.isCollideSprite( enemy ) ) enemy.death( function(){ this.enemyGenerator.remove( enemy.genID ); }.bind(this) );

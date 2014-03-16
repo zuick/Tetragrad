@@ -11,19 +11,33 @@
         levels: [
             { 
                 name: 'level1',
-                title: 'В самом начале...',
-                enemies: false,
+                title: 'Глава 1.\nДобраться до города.',
+                enemies: { disable: true },
                 shapes: false
             },
             {
                 name: 'level2',
-                title: 'Позже',
-                enemies: true,
-                shapes: true
+                title: 'Глава 1.\nДобраться до города живым.',
+                enemies: { 
+                    disable: false,
+                    maxItems: 8,
+                    interval: 600
+                },
+                shapes: false
+            },
+            {
+                name: 'level3',
+                title: 'Глава 2.\nДобро Пожаловать в Тетраград!.',
+                enemies: { 
+                    disable: false,
+                    maxItems: 12,
+                    interval: 1000
+                },
+                shapes: false
             }
         ],
         
-        collidableTiles: [ 2, 5, 6, 7, 8, 9, 10, 11, 12 ],
+        collidableTiles: [ 2, 5, 6, 7, 8, 9, 10, 11, 12, 21, 22, 23, 24 ],
         fallingShapesTiles: [ 9, 10, 11, 12 ],
         fallingShapesTypes: [ 'i', 'l', 'j', 's','z','o','t'],
         fallingShapesRotates: [ 'a', 'b', 'c', 'd'],

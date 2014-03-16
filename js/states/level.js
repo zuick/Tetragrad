@@ -98,7 +98,7 @@ Phaser.TetraLevel = function( game, level ){
     }
     
     this.setEnemyBlockGenerator = function(){
-        this.enemyGenerator = new Phaser.TetraEnemyGenerator( this.game, { disable: !level.enemies }, this );
+        this.enemyGenerator = new Phaser.TetraEnemyGenerator( this.game, level.enemies, this );
     }
     
     this.setHero = function(){        

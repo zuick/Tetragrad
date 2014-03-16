@@ -158,9 +158,7 @@ Phaser.TetraLevel = function( game, levelName ){
     this.makeDoorNextLevel = function(){
         var doorXY = Phaser.TetraTools.getObjectsPositionFromMap( this.map, "characters", this.game.config.door.tileIndex )[0];
         this.door = this.game.add.sprite(doorXY.x * this.map.tileWidth, doorXY.y  * this.map.tileHeight, 'door');
-
         this.door.animations.add('next', [0,1,2,3], 4, true);
-
         this.door.frame = 0; 
         this.door.animations.play('next');
     }

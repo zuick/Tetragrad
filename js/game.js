@@ -51,12 +51,14 @@
         },
         
         livesSpriteLength: 6,
-        introDelay: 1000
+        introDelay: 1000,
+        bumperDelay: 2000
     }
     
     var game = new Phaser.Game( config );
 
     // add autostarting preloader state
+    game.state.add( "bumper", new Phaser.TetraGameBumper( game, config.levels[0].name ));
     game.state.add( "preloader", new Phaser.TetraPreloader( game ), true );
     
     // add levels to game state manager

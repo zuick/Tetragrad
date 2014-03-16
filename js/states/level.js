@@ -64,6 +64,7 @@ Phaser.TetraLevel = function( game, levelName ){
     }
     
     this.clean = function(){
+        if( this.lives ) this.lives.destroy();
         if( this.map ) this.map.destroy();
         if( this.shape ) this.shape.destroy();
         if( this.enemyGenerator ) this.enemyGenerator.destroy();

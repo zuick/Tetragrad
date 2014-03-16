@@ -27,14 +27,24 @@
             },
             {
                 name: 'level3',
-                title: 'Глава 2.\nДобро Пожаловать в Тетраград!.',
+                title: 'Глава 2.\nДобро Пожаловать в Тетраград!',
                 enemies: { 
                     disable: false,
-                    maxItems: 12,
+                    maxItems: 14,
                     interval: 1000
                 },
                 shapes: false
-            }
+            },
+            {
+                name: 'level4',
+                title: 'Глава 3.\nВысылаем подмогу!\nОсторожно, головааа!',
+                enemies: { 
+                    disable: false,
+                    maxItems: 12,
+                    interval: 600
+                },
+                shapes: true
+            },
         ],
         
         collidableTiles: [ 2, 5, 6, 7, 8, 9, 10, 11, 12, 21, 22, 23, 24 ],
@@ -69,8 +79,8 @@
         },
         
         livesSpriteLength: 6,
-        introDelay: 1000,
-        bumperDelay: 2000
+        introDelay: 500,
+        bumperDelay: 1000
     }
     
     var game = new Phaser.Game( config );

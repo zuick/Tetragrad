@@ -25,6 +25,7 @@ Phaser.TetraLevel = function( game, levelName ){
 
 
         this.game.physics.collide(this.hero, this.ground);
+        this.game.physics.collide(this.hero, this.shapeLayer);
 
         // Tetrashape controls
         if( this.keys.shapeFast.isUp ) this.shape.normalFalling();
@@ -35,7 +36,7 @@ Phaser.TetraLevel = function( game, levelName ){
             this.shape.stopMoving();
 
         this.hero.tetraUpdate( this.keys.cursors );
-        this.enemyGenerator.update( [ this.ground, this.hero ] );
+        this.enemyGenerator.update( [ this.ground, this.shapeLayer, this.hero ] );
 
         this.updLivesSprite();            
         

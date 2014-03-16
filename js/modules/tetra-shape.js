@@ -155,6 +155,10 @@ Phaser.TetraShape = function( game, map, options, onFail ){
         this.clear();
         this.y++;
         this.putShape( this.type, this.x, this.y, this.r, this.tileIndex );
+        
+        this.map.setCollision( this.game.config.collidableTiles, true, "ground" );
+        this.map.setCollision( this.game.config.collidableTiles, true, "shape" );
+        
     }
 
     this.startMove = function( dir ){
@@ -265,6 +269,19 @@ Phaser.TetraShape = function( game, map, options, onFail ){
     }
     
     this.clear = function(){
+        // remove collides
+        var shapeLayer = this.map.layers[ map.getLayerIndex( "shape" ) ];
+        var ground = this.map.layers[ map.getLayerIndex( "ground" ) ];
+        var shapeInfo = Phaser.TetraShapesInfo[this.type];
+        if( shapeInfo && shapeInfo[this.r] ){
+            for( var block in shapeInfo[this.r] ){
+                var tx = shapeInfo[this.r][block][0] + this.x;
+                var ty = shapeInfo[this.r][block][1] + this.y;
+                shapeLayer.data[ty][tx].collides = false;
+                ground.data[ty][tx].collides = false;
+            }
+        }
+        // draw shape
         this.putShape( this.type, this.x, this.y, this.r, 1 );
     }
     
@@ -273,7 +290,6 @@ Phaser.TetraShape = function( game, map, options, onFail ){
         delete this.map;
         delete this.game;
         delete this.options;
-        
     }
     this.reset();
 }

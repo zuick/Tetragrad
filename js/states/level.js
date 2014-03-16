@@ -18,14 +18,16 @@ Phaser.TetraLevel = function( game, levelName ){
         this.setLivesSprite();  
         
         this.game.camera.follow( this.hero );
+
+        this.makeDoorNextLevel();
+
     }
     
     this.update = function(){
         // Physics
-
-
         this.game.physics.collide(this.hero, this.ground);
         this.game.physics.collide(this.hero, this.shapeLayer);
+        this.game.physics.collide(this.hero, this.door, function(a,b){this.nextLevel();},null,this);
 
         // Tetrashape controls
         if( this.keys.shapeFast.isUp ) this.shape.normalFalling();
@@ -40,7 +42,6 @@ Phaser.TetraLevel = function( game, levelName ){
 
         this.updLivesSprite();            
         
-
     }
     
     this.restartLevel = function(){
@@ -69,6 +70,7 @@ Phaser.TetraLevel = function( game, levelName ){
         if( this.shape ) this.shape.destroy();
         if( this.enemyGenerator ) this.enemyGenerator.destroy();
         if( this.hero ) this.hero.destroy();
+        if( this.door ) this.door.destroy();
         
         if( this.keys ){
             for( var i in this.keys ){
@@ -148,6 +150,20 @@ Phaser.TetraLevel = function( game, levelName ){
             this.lives.frame = this.game.config.livesSpriteLength - 1;
         }
     }
+
+
+    this.makeDoorNextLevel = function(){
+        var doorXY = Phaser.TetraTools.getObjectsPositionFromMap( this.map, "characters", this.game.config.door.tileIndex )[0];
+        this.door = this.game.add.sprite(doorXY.x * this.map.tileWidth, doorXY.y  * this.map.tileHeight, 'door');
+
+        this.door.animations.add('next', [0,1,2,3], 4, true);
+
+        this.door.frame = 0; 
+        this.door.animations.play('next');
+    }
+    
+
+
 }
 
 Phaser.TetraLevel.prototype = Object.create( Phaser.State.prototype );

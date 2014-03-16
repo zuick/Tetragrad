@@ -45,6 +45,10 @@
             deathTimeout: 1000,
             enemyHit: 250
         },
+
+        door:{
+            tileIndex: 4,
+        },
         
         livesSpriteLength: 6,
         introDelay: 1000

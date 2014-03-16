@@ -21,14 +21,16 @@ Phaser.TetraPreloader = function( game ){
         this.game.load.spritesheet('enemy-block', 'assets/enemy-block-sprite.png', 32, 32);
         this.game.load.spritesheet('lives', 'assets/lives.png', 48, 48);
         this.game.load.spritesheet('door', 'assets/door.png', 32, 32);
+
+        this.game.load.image('bumper','assets/game-bumper.png');
     }
 
     this.create = function() {
-        this.game.state.start( this.game.config.levels[0].name + '-intro', true, true );
+        this.game.state.start( 'bumper', true, true );
     }
 }
 
 Phaser.TetraPreloader.prototype = Object.create( Phaser.State.prototype );
-Phaser.TetraPreloader.prototype.constructor = Phaser.MyState;
+Phaser.TetraPreloader.prototype.constructor = Phaser.TetraPreloader;
 
 

@@ -1,6 +1,6 @@
 Phaser.TetraShape = function( game, map, options, onFail ){
     options = options || {};
-    console.log(" create tetrashape")
+    
     this.game = game;
     this.map = map;
     this.interval = options.interval || 500;
@@ -28,6 +28,7 @@ Phaser.TetraShape = function( game, map, options, onFail ){
         var type = this.game.config.fallingShapesTypes[Math.floor((Math.random()*this.game.config.fallingShapesTypes.length))];
         var x = ( this.hero ) ? Math.floor( this.hero.x / this.map.tileWidth ) : this.map.width / 2 - 2;
         var y = 0;
+        
         var r = this.game.config.fallingShapesRotates[Math.floor((Math.random()*this.game.config.fallingShapesRotates.length))];
         var tileIndex = this.game.config.fallingShapesTiles[Math.floor((Math.random()*this.game.config.fallingShapesTiles.length))];        
         this.setShape( type, x, y, r, tileIndex );
@@ -54,6 +55,10 @@ Phaser.TetraShape = function( game, map, options, onFail ){
     this.start = function( interval ){
         interval = interval || this.interval;
         this.FallingEventHandle = this.game.time.events.loop( interval, this.tick, this )
+    }
+    
+    this.stop = function(){
+        this.game.time.events.remove( this.FallingEventHandle );
     }
     
     this.tick = function(){
@@ -211,6 +216,14 @@ Phaser.TetraShape = function( game, map, options, onFail ){
     
     this.clear = function(){
         this.putShape( this.type, this.x, this.y, this.r, 1 );
+    }
+    
+    this.destroy = function(){
+        this.stop();
+        delete this.map;
+        delete this.game;
+        delete this.options;
+        
     }
     this.reset();
 }

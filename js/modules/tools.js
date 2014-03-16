@@ -40,6 +40,10 @@ Phaser.TetraTools = function( game ){
             layer.data[data[i].y][data[i].x].collides = data[i].collides;
         }
     }
+    
+    this.destroy = function(){
+        delete this.game;
+    }
 }
 
 

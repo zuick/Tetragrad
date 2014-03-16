@@ -3,7 +3,7 @@ Phaser.TetraShape = function( game, map, options, onFail ){
     
     this.game = game;
     this.map = map;
-    this.interval = options.interval || 600;
+    this.interval = options.interval || 500;
     this.turbo = options.turbo || 50;
     this.moveInterval = options.moveInterval || 200;
     this.maxLineWidth = options.maxLineWidth || 8;

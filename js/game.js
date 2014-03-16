@@ -45,6 +45,16 @@
                 },
                 shapes: true
             },
+            {
+                name: 'level5',
+                title: 'Глава 3.\nЗадавите их всех!',
+                enemies: { 
+                    disable: false,
+                    maxItems: 40,
+                    interval: 200
+                },
+                shapes: true
+            },
         ],
         
         collidableTiles: [ 2, 5, 6, 7, 8, 9, 10, 11, 12, 21, 22, 23, 24 ],
@@ -68,8 +78,8 @@
             spritesheet: 'enemy-block',
             bounce: 0.05,
             gravity: 500,
-            speed: 40,
-            jump: 250,
+            speed: 50,
+            jump: 270,
             deathTimeout: 1000,
             enemyHit: 250
         },

@@ -55,6 +55,16 @@
                 },
                 shapes: true
             },
+            {
+                name: 'level6',
+                title: 'Глава 4.\nПора выбираться.',
+                enemies: { 
+                    disable: false,
+                    maxItems: 5,
+                    interval: 500
+                },
+                shapes: true
+            },
         ],
         
         collidableTiles: [ 2, 5, 6, 7, 8, 9, 10, 11, 12, 21, 22, 23, 24 ],

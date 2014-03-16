@@ -46,7 +46,7 @@ Phaser.TetraShape = function( game, map, options, onFail ){
         var tileIndex = this.game.config.fallingShapesTiles[Math.floor((Math.random()*this.game.config.fallingShapesTiles.length))];        
         this.setShape( type, x, y, r, tileIndex );
         
-        if( this.isCollideGround( 0, 1 ) ){
+        if( this.isCollideGround( 0, 0 ) ){
             if( this.FallingEventHandle ) this.game.time.events.remove( this.FallingEventHandle );
             if( typeof onFail == 'function' ) onFail();
         }

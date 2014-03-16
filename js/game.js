@@ -11,11 +11,15 @@
         levels: [
             { 
                 name: 'level1',
-                title: 'В самом начале...'
+                title: 'В самом начале...',
+                enemies: false,
+                shapes: false
             },
             {
                 name: 'level2',
-                title: 'Позже'
+                title: 'Позже',
+                enemies: true,
+                shapes: true
             }
         ],
         
@@ -64,7 +68,7 @@
     // add levels to game state manager
     for( var i in config.levels ){
         game.state.add( config.levels[i].name + '-intro', new Phaser.TetraLevelIntro( game, config.levels[i].name ) );        
-        game.state.add( config.levels[i].name, new Phaser.TetraLevel( game, config.levels[i].name ) );
+        game.state.add( config.levels[i].name, new Phaser.TetraLevel( game, config.levels[i] ) );
     }
     
 })();

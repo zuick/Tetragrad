@@ -1,9 +1,9 @@
 /*
  * TetraLevel is inherits Phaser.State
  */
-Phaser.TetraLevel = function( game, levelName ){
+Phaser.TetraLevel = function( game, level ){
     this.game = game;
-    this.levelName = levelName;
+    this.levelName = level.name;
 
     this.create = function() {
         this.game.stage.backgroundColor = '#000';
@@ -81,7 +81,7 @@ Phaser.TetraLevel = function( game, levelName ){
     }
     
     this.setMap = function(){
-        this.map = this.game.add.tilemap( levelName );
+        this.map = this.game.add.tilemap( this.levelName );
         this.map.addTilesetImage('tileset', 'tileset');
         this.background = this.map.createLayer('background');
         this.ground = this.map.createLayer('ground');
@@ -94,13 +94,11 @@ Phaser.TetraLevel = function( game, levelName ){
     }
     
     this.setTetraShape = function(){
-        this.shape = new Phaser.TetraShape( this.game, this.map, { hero: this.hero, enemyGenerator: this.enemyGenerator }, function(){ this.restartLevel(); }.bind(this)  );        
-        this.shape.start();
+        this.shape = new Phaser.TetraShape( this.game, this.map, { hero: this.hero, enemyGenerator: this.enemyGenerator, disable: !level.shapes }, function(){ this.restartLevel(); }.bind(this)  );        
     }
     
     this.setEnemyBlockGenerator = function(){
-        this.enemyGenerator = new Phaser.TetraEnemyGenerator( this.game, {}, this );
-        this.enemyGenerator.start();
+        this.enemyGenerator = new Phaser.TetraEnemyGenerator( this.game, { disable: !level.enemies }, this );
     }
     
     this.setHero = function(){        

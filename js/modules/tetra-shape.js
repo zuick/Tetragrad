@@ -71,7 +71,7 @@ Phaser.TetraShape = function( game, map, options, onFail ){
     }
     
     this.stop = function(){
-        this.game.time.events.remove( this.FallingEventHandle );
+        if( this.FallingEventHandle ) this.game.time.events.remove( this.FallingEventHandle );
     }
     
     this.tick = function(){     
@@ -332,6 +332,7 @@ Phaser.TetraShape = function( game, map, options, onFail ){
         delete this.options;
     }
     this.reset();
+    if( !options.disable ) this.start();
 }
 
 

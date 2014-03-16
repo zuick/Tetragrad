@@ -14,7 +14,7 @@ Phaser.TetraEnemyGenerator = function( game, options, state ){
     }
    
     this.stop = function(){
-        this.game.time.events.remove( this.createEventHandle );
+        if( this.createEventHandle ) this.game.time.events.remove( this.createEventHandle );
     }
     
     this.create = function(){
@@ -86,6 +86,8 @@ Phaser.TetraEnemyGenerator = function( game, options, state ){
         delete this.game;
         
     }
+    
+    if( !options.disable ) this.start(); 
 }
 
 

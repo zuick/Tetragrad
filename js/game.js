@@ -8,7 +8,17 @@
         transparent: false,
         antialias: false,
         
-        levels: [ 'level1', 'level2' ],
+        levels: [
+            { 
+                name: 'level1',
+                title: 'В самом начале...'
+            },
+            {
+                name: 'level2',
+                title: 'Позже'
+            }
+        ],
+        
         collidableTiles: [ 2, 5, 6, 7, 8, 9, 10, 11, 12 ],
         fallingShapesTiles: [ 9, 10, 11, 12 ],
         fallingShapesTypes: [ 'i', 'l', 'j', 's','z','o','t'],
@@ -21,7 +31,7 @@
             gravity: 1000,
             speed: 180,
             jump: 390,
-            lives: 1,
+            lives: 5,
             deathTimeout: 1000,
         },
         
@@ -36,20 +46,19 @@
             enemyHit: 250
         },
         
-        livesSpriteLength: 6
+        livesSpriteLength: 6,
+        introDelay: 1000
     }
     
     var game = new Phaser.Game( config );
-    
-    
-    
+
     // add autostarting preloader state
     game.state.add( "preloader", new Phaser.TetraPreloader( game ), true );
-    game.state.add( "pause", new Phaser.TetraPause( game ) );
     
     // add levels to game state manager
     for( var i in config.levels ){
-        game.state.add( config.levels[i], new Phaser.TetraLevel( game, config.levels[i] ) );        
+        game.state.add( config.levels[i].name + '-intro', new Phaser.TetraLevelIntro( game, config.levels[i].name ) );        
+        game.state.add( config.levels[i].name, new Phaser.TetraLevel( game, config.levels[i].name ) );
     }
     
 })();

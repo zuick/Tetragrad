@@ -12,18 +12,18 @@ Phaser.TetraPreloader = function( game ){
         this.game.load.image('tileset', 'assets/tileset.png');
         
         // load maps
-        this.game.config.levels.forEach( function( levelName ){
-            this.game.load.tilemap( levelName, 'assets/' + levelName + '.json', null, Phaser.Tilemap.TILED_JSON);            
+        this.game.config.levels.forEach( function( level ){
+            this.game.load.tilemap( level.name, 'assets/' + level.name + '.json', null, Phaser.Tilemap.TILED_JSON);            
         }.bind( this ));
             
         // load sprites
         this.game.load.spritesheet('hero', 'assets/hero-sprite.png', 32, 32);
         this.game.load.spritesheet('enemy-block', 'assets/enemy-block-sprite.png', 32, 32);
-        this.game.load.spritesheet('lives', 'assets/lives2.png', 64, 64);
+        this.game.load.spritesheet('lives', 'assets/lives.png', 48, 48);
     }
 
     this.create = function() {
-        this.game.state.start( this.game.config.levels[0], true. true );
+        this.game.state.start( this.game.config.levels[0].name + '-intro', true, true );
     }
 }
 

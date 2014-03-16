@@ -9,8 +9,7 @@ Phaser.TetraLevel = function( game, levelName ){
         this.game.stage.backgroundColor = '#000';
         this.game.stage.fullScreenScaleMode = Phaser.StageScaleMode.SHOW_ALL;
         Phaser.Canvas.setSmoothingEnabled(this.game.context, false);
-                
-        this.setTools();       
+                    
         this.setMap();
         this.setHero();
         this.setTetraShape();
@@ -53,9 +52,9 @@ Phaser.TetraLevel = function( game, levelName ){
         this.clean();
         
         var levels = this.game.config.levels;
-        var currentIndex = levels.indexOf( this.game.state.current );
-        if( currentIndex < levels.length - 1 ) this.game.state.start( levels[ currentIndex + 1 ], true, true );
-        else this.game.state.start( levels[ 0 ], true, true );
+        var currentIndex = Phaser.TetraTools.getLevelIndex( levels, this.game.state.current );
+        if( currentIndex < levels.length - 1 ) this.game.state.start( levels[ currentIndex + 1 ].name + '-intro', true, true );
+        else this.game.state.start( levels[ 0 ].name + '-intro', true, true );
     }
     
     this.pause = function(){
@@ -64,7 +63,6 @@ Phaser.TetraLevel = function( game, levelName ){
     }
     
     this.clean = function(){
-        if( this.tools ) this.tools.destroy();
         if( this.map ) this.map.destroy();
         if( this.shape ) this.shape.destroy();
         if( this.enemyGenerator ) this.enemyGenerator.destroy();
@@ -75,11 +73,6 @@ Phaser.TetraLevel = function( game, levelName ){
                 this.game.input.keyboard.removeKey( this.keys[i].keyCode );
             }
         }
-    }
-    
-    this.setTools = function(){
-        if( this.tools ) this.tools.destroy();
-        this.tools = new Phaser.TetraTools( this.game );
     }
     
     this.setMap = function(){
@@ -106,7 +99,7 @@ Phaser.TetraLevel = function( game, levelName ){
     }
     
     this.setHero = function(){        
-        this.heroInitialXY = this.tools.getObjectsPositionFromMap( this.map, "characters", this.game.config.hero.tileIndex )[0];
+        this.heroInitialXY = Phaser.TetraTools.getObjectsPositionFromMap( this.map, "characters", this.game.config.hero.tileIndex )[0];
         this.hero = Phaser.TetraHero( this.heroInitialXY.x * this.map.tileWidth, this.heroInitialXY.y * this.map.tileHeight, this.game );            
     }
     
@@ -140,8 +133,8 @@ Phaser.TetraLevel = function( game, levelName ){
         if(this.hero.lives > 0){  
             this.lives = this.game.add.sprite(0, 0, 'lives');
             this.lives.fixedToCamera = true;
-            this.lives.cameraOffset.x = 32;
-            this.lives.cameraOffset.y = 32;
+            this.lives.cameraOffset.x = 24;
+            this.lives.cameraOffset.y = 24;
             this.lives.frame = 0;
         }
     }

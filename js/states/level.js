@@ -30,12 +30,14 @@ Phaser.TetraLevel = function( game, level ){
         this.game.physics.collide(this.hero, this.door, function(a,b){this.nextLevel();},null,this);
 
         // Tetrashape controls
-        if( this.keys.shapeFast.isUp ) this.shape.normalFalling();
-        if( ( this.keys.shapeLeft.isUp || 
-                ( !this.keys.shapeLeft.isUp && !this.keys.shapeLeft.isDown ) ) && 
-            ( this.keys.shapeRight.isUp ||
-                ( !this.keys.shapeRight.isUp && !this.keys.shapeRight.isDown ) ) ) 
-            this.shape.stopMoving();
+        if( level.shapes ){
+            if( this.keys.shapeFast.isUp ) this.shape.normalFalling();
+            if( ( this.keys.shapeLeft.isUp || 
+                    ( !this.keys.shapeLeft.isUp && !this.keys.shapeLeft.isDown ) ) && 
+                ( this.keys.shapeRight.isUp ||
+                    ( !this.keys.shapeRight.isUp && !this.keys.shapeRight.isDown ) ) ) 
+                this.shape.stopMoving();            
+        }
 
         this.hero.tetraUpdate( this.keys.cursors );
         this.enemyGenerator.update( [ this.ground, this.shapeLayer, this.hero ] );
@@ -110,11 +112,13 @@ Phaser.TetraLevel = function( game, level ){
         
         this.keys = {};
 
-        // create keyboard handlers        
-        this.keys.shapeLeft = this.game.input.keyboard.addKey( Phaser.Keyboard.A );
-        this.keys.shapeRight = this.game.input.keyboard.addKey( Phaser.Keyboard.D );
-        this.keys.shapeRotate = this.game.input.keyboard.addKey( Phaser.Keyboard.W );
-        this.keys.shapeFast = this.game.input.keyboard.addKey( Phaser.Keyboard.S );
+        // create keyboard handlers       
+        if( level.shapes ){
+            this.keys.shapeLeft = this.game.input.keyboard.addKey( Phaser.Keyboard.A );
+            this.keys.shapeRight = this.game.input.keyboard.addKey( Phaser.Keyboard.D );
+            this.keys.shapeRotate = this.game.input.keyboard.addKey( Phaser.Keyboard.W );
+            this.keys.shapeFast = this.game.input.keyboard.addKey( Phaser.Keyboard.S );            
+        }
         this.keys.fullscreen = this.game.input.keyboard.addKey( Phaser.Keyboard.F);
         this.keys.next = this.game.input.keyboard.addKey( Phaser.Keyboard.N );
         this.keys.restart = this.game.input.keyboard.addKey( Phaser.Keyboard.R );
@@ -122,10 +126,12 @@ Phaser.TetraLevel = function( game, level ){
         this.keys.cursors = this.game.input.keyboard.createCursorKeys(); 
 
         // set events
-        this.keys.shapeLeft.onDown.add( function(){ this.startMove("left") }, this.shape );
-        this.keys.shapeRight.onDown.add( function(){ this.startMove("right") }, this.shape );
-        this.keys.shapeRotate.onDown.add( this.shape.rotate, this.shape );
-        this.keys.shapeFast.onDown.add( this.shape.fastFalling, this.shape );
+        if( level.shapes ){
+            this.keys.shapeLeft.onDown.add( function(){ this.startMove("left") }, this.shape );
+            this.keys.shapeRight.onDown.add( function(){ this.startMove("right") }, this.shape );
+            this.keys.shapeRotate.onDown.add( this.shape.rotate, this.shape );
+            this.keys.shapeFast.onDown.add( this.shape.fastFalling, this.shape );
+        }
         this.keys.next.onDown.add( this.nextLevel, this );
         this.keys.restart.onDown.add( this.restartLevel, this );
         

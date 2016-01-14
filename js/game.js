@@ -16,16 +16,6 @@
                 shapes: false
             },
             {
-                name: 'level2',
-                title: 'Глава 1.\nДобраться до города живым.',
-                enemies: { 
-                    disable: false,
-                    maxItems: 8,
-                    interval: 600
-                },
-                shapes: false
-            },
-            {
                 name: 'level3',
                 title: 'Глава 2.\nДобро Пожаловать в Тетраград!',
                 enemies: { 
